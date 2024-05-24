@@ -4,7 +4,7 @@ public class Vendedor extends Empleado {
 
     private Turno turnoLaboral;
 
-    public Vendedor(String nombreCompleto, String dni, String direccion, String telefono, Boolean activo, String email) {
+    public Vendedor(String nombreCompleto, Integer dni, String direccion, String telefono, Boolean activo, String email) {
         super(nombreCompleto, dni, direccion, telefono, activo, email);
     }
 

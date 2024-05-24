@@ -4,7 +4,7 @@ public abstract class Usuario {
 
     private String nombreCompleto;
 
-    private String dni;
+    private Integer dni;
 
     private String direccion;
 
@@ -14,7 +14,7 @@ public abstract class Usuario {
 
     private String email;
 
-    public Usuario(String nombreCompleto, String dni, String direccion, String telefono, Boolean activo, String email) {
+    public Usuario(String nombreCompleto, Integer dni, String direccion, String telefono, Boolean activo, String email) {
         this.nombreCompleto = nombreCompleto;
         this.dni = dni;
         this.direccion = direccion;
@@ -31,11 +31,11 @@ public abstract class Usuario {
         this.nombreCompleto = nombreCompleto;
     }
 
-    public String getDni() {
+    public Integer getDni() {
         return dni;
     }
 
-    public void setDni(String dni) {
+    public void setDni(Integer dni) {
         this.dni = dni;
     }
 

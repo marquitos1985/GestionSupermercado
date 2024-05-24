@@ -9,7 +9,7 @@ public abstract class Empleado extends Usuario {
     private Float sueldo;
 
 
-    public Empleado(String nombreCompleto, String dni, String direccion, String telefono, Boolean activo, String email) {
+    public Empleado(String nombreCompleto, Integer dni, String direccion, String telefono, Boolean activo, String email) {
         super(nombreCompleto, dni, direccion, telefono, activo, email);
     }
 }
