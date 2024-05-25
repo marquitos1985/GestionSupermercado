@@ -6,10 +6,10 @@ public class Vendedor extends Empleado {
 
     private Turno turnoLaboral;
 
-    public Vendedor(String nombreCompleto, Integer dni, String direccion, String telefono, Boolean activo, String email) {
-        super(nombreCompleto, dni, direccion, telefono, activo, email);
+    public Vendedor(String nombreCompleto, Integer dni, String direccion, String telefono, Boolean activo, String email, String contraseña, Float sueldo, Turno turnoLaboral) {
+        super(nombreCompleto, dni, direccion, telefono, activo, email, contraseña, sueldo);
+        this.turnoLaboral = turnoLaboral;
     }
-
 
     public Turno getTurnoLaboral() {
         return turnoLaboral;

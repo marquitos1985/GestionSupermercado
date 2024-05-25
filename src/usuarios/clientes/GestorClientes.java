@@ -24,7 +24,7 @@ public class GestorClientes {
 
     public boolean crearUnCliente(String nombreCompleto, Integer dni, String direccion, String telefono, Boolean activo, String email) {
         for (Cliente cliente : clientes) {
-            if (cliente.getDni() == dni) {
+            if (cliente.getDni().equals(dni)) {
                 return false;
             }
         }
@@ -76,7 +76,7 @@ public class GestorClientes {
         }
         return false;
     }
-    public boolean levantarArchivoJson (){
+    public boolean levantarArchivoJsonClientes(){
         try {
             ObjectMapper mapeador= new ObjectMapper();
             ArrayList<Cliente> clientes = mapeador.readValue(new File("cliente.json"), new TypeReference<ArrayList<Cliente>>(){});
@@ -87,7 +87,7 @@ public class GestorClientes {
         return false;
         }
     }
-    public boolean guardarArchivoJson(){
+    public boolean guardarArchivoJsonClientes(){
         try{
             ObjectMapper mapeador = new ObjectMapper();
             List<Cliente> clienteList = new ArrayList<>(clientes);

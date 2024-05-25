@@ -1,13 +1,15 @@
 package usuarios.empleados.administrador;
 
+import usuarios.clientes.Cliente;
 import usuarios.empleados.Empleado;
 
-public class Administrador extends Empleado {
+public class Administrador extends Empleado implements Comparable{
 
 
-    public Administrador(String nombreCompleto, Integer dni, String direccion, String telefono, Boolean activo, String email) {
-        super(nombreCompleto, dni, direccion, telefono, activo, email);
+    public Administrador(String nombreCompleto, Integer dni, String direccion, String telefono, Boolean activo, String email, String contraseña, Float sueldo) {
+        super(nombreCompleto, dni, direccion, telefono, activo, email, contraseña, sueldo);
     }
+
 
     public String toString() {
         return String.format(
@@ -20,4 +22,12 @@ public class Administrador extends Empleado {
                 );
     }
 
+    @Override
+    public int compareTo(Object o) {
+        if (o instanceof Administrador) {
+            Administrador otroAdministrador = (Administrador) o;
+            return this.getDni().compareTo(otroAdministrador.getDni());
+        }
+        return 0;
+    }
 }
