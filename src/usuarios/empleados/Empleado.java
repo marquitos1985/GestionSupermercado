@@ -1,4 +1,4 @@
-package usuarios.empleados.empleado;
+package usuarios.empleados;
 
 import usuarios.Usuario;
 

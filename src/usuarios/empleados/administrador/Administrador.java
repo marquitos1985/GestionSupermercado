@@ -1,6 +1,6 @@
 package usuarios.empleados.administrador;
 
-import usuarios.empleados.empleado.Empleado;
+import usuarios.empleados.Empleado;
 
 public class Administrador extends Empleado {
 

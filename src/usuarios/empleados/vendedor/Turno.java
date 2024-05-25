@@ -1,4 +1,4 @@
-package usuarios.empleados.empleado;
+package usuarios.empleados.vendedor;
 
 public enum Turno {
     MAÑANA("08:00 - 16:00"),

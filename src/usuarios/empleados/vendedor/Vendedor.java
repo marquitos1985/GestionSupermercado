@@ -1,7 +1,6 @@
-package usuarios.empleados;
+package usuarios.empleados.vendedor;
 
-import usuarios.empleados.empleado.Empleado;
-import usuarios.empleados.empleado.Turno;
+import usuarios.empleados.Empleado;
 
 public class Vendedor extends Empleado {
 
