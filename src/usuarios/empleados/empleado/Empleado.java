@@ -1,11 +1,10 @@
-package usuarios.empleados;
+package usuarios.empleados.empleado;
 
 import usuarios.Usuario;
 
 public abstract class Empleado extends Usuario {
 
     private String contraseña;
-
     private Float sueldo;
 
 

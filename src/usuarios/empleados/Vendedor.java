@@ -1,5 +1,8 @@
 package usuarios.empleados;
 
+import usuarios.empleados.empleado.Empleado;
+import usuarios.empleados.empleado.Turno;
+
 public class Vendedor extends Empleado {
 
     private Turno turnoLaboral;

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeSet;
 
 public class GestorClientes {
@@ -32,7 +33,7 @@ public class GestorClientes {
 
     public Cliente buscarClientePorDni(Integer dni) {
         for (Cliente cliente : clientes) {
-            if (cliente.getDni() == dni) {
+            if (cliente.getDni().equals(dni)) {
                 return cliente;
             }
         }
@@ -86,15 +87,21 @@ public class GestorClientes {
         return false;
         }
     }
-
-
-    public void muestraClientes (){
-        if(levantarArchivoJson()){
-            for(Cliente cliente : clientes){
-                System.out.println(cliente.toString());
-            }
-        }else {
-            System.out.println("No funciona we");
+    public boolean guardarArchivoJson(){
+        try{
+            ObjectMapper mapeador = new ObjectMapper();
+            List<Cliente> clienteList = new ArrayList<>(clientes);
+            mapeador.writeValue(new File("cliente.json"), clienteList);
+            return true;
+        }catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public void muestraUnClientePorDni(Integer dni){
+        Cliente cliente = buscarClientePorDni(dni);
+        if(cliente !=null){
+            System.out.println(cliente.toString());
         }
     }
 }
