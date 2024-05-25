@@ -2,11 +2,11 @@ package usuarios.empleados.vendedor;
 
 import usuarios.empleados.Empleado;
 
-public class Vendedor extends Empleado {
+public class Vendedor extends Empleado implements Comparable {
 
     private Turno turnoLaboral;
 
-    public Vendedor(String nombreCompleto, Integer dni, String direccion, String telefono, Boolean activo, String email, String contraseña, Float sueldo, Turno turnoLaboral) {
+    public Vendedor(String nombreCompleto, Integer dni, String direccion, String telefono, Boolean activo, String email, String contraseña, Float sueldo) {
         super(nombreCompleto, dni, direccion, telefono, activo, email, contraseña, sueldo);
         this.turnoLaboral = turnoLaboral;
     }
@@ -30,4 +30,15 @@ public class Vendedor extends Empleado {
                 super.toString(),
                 turnoLaboral.name(), turnoLaboral.getHorario());
     }
+
+    @Override
+    public int compareTo(Object o) {
+        if (o instanceof Vendedor) {
+            Vendedor otroVendedor = (Vendedor) o;
+            return this.getDni().compareTo(otroVendedor.getDni());
+        }
+        return 0;
+    }
+
 }
+
