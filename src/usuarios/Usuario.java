@@ -23,6 +23,9 @@ public abstract class Usuario {
         this.email = email;
     }
 
+    protected Usuario() {
+    }
+
     public String getNombreCompleto() {
         return nombreCompleto;
     }
