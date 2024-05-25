@@ -12,7 +12,7 @@ import java.util.TreeSet;
 public class GestorAdministrador {
 
     private TreeSet<Administrador> administradores;
-    private ObjectMapper objectMapper;
+
     public GestorAdministrador() {
         this.administradores = new TreeSet<>();
     }
@@ -112,6 +112,12 @@ public class GestorAdministrador {
         }catch (Exception e) {
             e.printStackTrace();
             return false;
+        }
+    }
+    public void muestraUnAdministradorPorDni(Integer dni){
+        Administrador administrador = buscarAdministradorPorDni(dni);
+        if(administrador !=null){
+            System.out.println(administrador.toString());
         }
     }
 }

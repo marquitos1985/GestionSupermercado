@@ -14,6 +14,9 @@ public abstract class Empleado extends Usuario {
         this.sueldo = sueldo;
     }
 
+    protected Empleado() {
+    }
+
     public String getContraseña() {
         return contraseña;
     }
