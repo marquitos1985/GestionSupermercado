@@ -9,6 +9,6 @@ public enum TipoProducto {
     GOLOSINAS,
     CARNES,
     FRUTAS,
-    VERDURAS
+    VERDURAS;
 
 }

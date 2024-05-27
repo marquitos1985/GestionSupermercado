@@ -1,1 +1,242 @@
-[{"idProducto":"P10010","marca":"Fanta","tipoProducto":"BEBIDAS","precio":2500.0,"descripcion":"2.25LTS","fechaDeVencimiento":"12/12/24"},{"idProducto":"P10020","marca":"Lays","tipoProducto":"SNACKS","precio":2800.0,"descripcion":"120gr","fechaDeVencimiento":"12/12/24"}]
+[
+  {
+    "idProducto": "LACTEOS100001",
+    "marca": "Leche La Campiña",
+    "tipoProducto": "LACTEOS",
+    "precio": "2500",
+    "descripción": "1L",
+    "fechaDeVencimiento": "12/12/2024"
+  },
+  {
+    "idProducto": "PANES100002",
+    "marca": "Pan Integral",
+    "tipoProducto": "PANES",
+    "precio": "2200",
+    "descripción": "400g",
+    "fechaDeVencimiento": "10/10/2024"
+  },
+  {
+    "idProducto": "SNACKS100003",
+    "marca": "Papas Fritas",
+    "tipoProducto": "SNACKS",
+    "precio": "2000",
+    "descripción": "150g",
+    "fechaDeVencimiento": "08/08/2024"
+  },
+  {
+    "idProducto": "BEBIDAS100004",
+    "marca": "Coca cola",
+    "tipoProducto": "BEBIDAS",
+    "precio": "1800",
+    "descripción": "2L",
+    "fechaDeVencimiento": "09/09/2024"
+  },
+  {
+    "idProducto": "GALLETITAS100005",
+    "marca": "Galletas Oreo",
+    "tipoProducto": "GALLETITAS",
+    "precio": "4500",
+    "descripción": "300g",
+    "fechaDeVencimiento": "15/11/2024"
+  },
+  {
+    "idProducto": "GOLOSINAS100006",
+    "marca": "Chocolates Hershey's",
+    "tipoProducto": "GOLOSINAS",
+    "precio": "5500",
+    "descripción": "200g",
+    "fechaDeVencimiento": "25/12/2024"
+  },
+  {
+    "idProducto": "CARNES100007",
+    "marca": "Carne de Res",
+    "tipoProducto": "CARNES",
+    "precio": "3000",
+    "descripción": "1kg",
+    "fechaDeVencimiento": "05/05/2024"
+  },
+  {
+    "idProducto": "FRUTAS100008",
+    "marca": "Manzanas",
+    "tipoProducto": "FRUTAS",
+    "precio": "2800",
+    "descripción": "1kg",
+    "fechaDeVencimiento": "20/10/2024"
+  },
+  {
+    "idProducto": "VERDURAS100009",
+    "marca": "Lechuga",
+    "tipoProducto": "VERDURAS",
+    "precio": "1500",
+    "descripción": "500g",
+    "fechaDeVencimiento": "01/01/2025"
+  },
+  {
+    "idProducto": "LACTEOS100010",
+    "marca": "Queso Parmesano",
+    "tipoProducto": "LACTEOS",
+    "precio": "1600",
+    "descripción": "200g",
+    "fechaDeVencimiento": "03/03/2025"
+  },
+  {
+    "idProducto": "PANES100011",
+    "marca": "Pan Baguette",
+    "tipoProducto": "PANES",
+    "precio": "3500",
+    "descripción": "500g",
+    "fechaDeVencimiento": "11/11/2024"
+  },
+  {
+    "idProducto": "SNACKS100012",
+    "marca": "Papas Pringles",
+    "tipoProducto": "SNACKS",
+    "precio": "3000",
+    "descripción": "160g",
+    "fechaDeVencimiento": "06/06/2024"
+  },
+  {
+    "idProducto": "BEBIDAS100013",
+    "marca": "Agua Mineral",
+    "tipoProducto": "BEBIDAS",
+    "precio": "2700",
+    "descripción": "500ml",
+    "fechaDeVencimiento": "07/07/2024"
+  },
+  {
+    "idProducto": "GALLETITAS100014",
+    "marca": "Galletas Ritz",
+    "tipoProducto": "GALLETITAS",
+    "precio": "2000",
+    "descripción": "300g",
+    "fechaDeVencimiento": "04/04/2024"
+  },
+  {
+    "idProducto": "GOLOSINAS100015",
+    "marca": "Chicles Trident",
+    "tipoProducto": "GOLOSINAS",
+    "precio": "1800",
+    "descripción": "30 unidades",
+    "fechaDeVencimiento": "02/02/2024"
+  },
+  {
+    "idProducto": "CARNES100016",
+    "marca": "Pollo",
+    "tipoProducto": "CARNES",
+    "precio": "1900",
+    "descripción": "1kg",
+    "fechaDeVencimiento": "13/03/2024"
+  },
+  {
+    "idProducto": "FRUTAS100017",
+    "marca": "Plátanos",
+    "tipoProducto": "FRUTAS",
+    "precio": "2800",
+    "descripción": "1kg",
+    "fechaDeVencimiento": "16/04/2024"
+  },
+  {
+    "idProducto": "VERDURAS100018",
+    "marca": "Tomates",
+    "tipoProducto": "VERDURAS",
+    "precio": "2900",
+    "descripción": "1kg",
+    "fechaDeVencimiento": "17/05/2024"
+  },
+  {
+    "idProducto": "LACTEOS100019",
+    "marca": "Yogur Natural",
+    "tipoProducto": "LACTEOS",
+    "precio": "3500",
+    "descripción": "500g",
+    "fechaDeVencimiento": "18/06/2024"
+  },
+  {
+    "idProducto": "PANES100020",
+    "marca": "Croissants",
+    "tipoProducto": "PANES",
+    "precio": "6000",
+    "descripción": "6 unidades",
+    "fechaDeVencimiento": "19/07/2024"
+  },
+  {
+    "idProducto": "SNACKS100021",
+    "marca": "Papas Lay's",
+    "tipoProducto": "SNACKS",
+    "precio": "5500",
+    "descripción": "250g",
+    "fechaDeVencimiento": "20/08/2024"
+  },
+  {
+    "idProducto": "BEBIDAS100022",
+    "marca": "Refresco Miranda",
+    "tipoProducto": "BEBIDAS",
+    "precio": "8000",
+    "descripción": "2L",
+    "fechaDeVencimiento": "21/09/2024"
+  },
+  {
+    "idProducto": "GALLETITAS100023",
+    "marca": "Galletas Chips Ahoy",
+    "tipoProducto": "GALLETITAS",
+    "precio": "10000",
+    "descripción": "400g",
+    "fechaDeVencimiento": "22/10/2024"
+  },
+  {
+    "idProducto": "GOLOSINAS100024",
+    "marca": "Chocolates M&M's",
+    "tipoProducto": "GOLOSINAS",
+    "precio": "7500",
+    "descripción": "250g",
+    "fechaDeVencimiento": "23/11/2024"
+  },
+  {
+    "idProducto": "CARNES100025",
+    "marca": "Carne de Cerdo",
+    "tipoProducto": "CARNES",
+    "precio": "9000",
+    "descripción": "1kg",
+    "fechaDeVencimiento": "24/12/2024"
+  },
+  {
+    "idProducto": "FRUTAS100026",
+    "marca": "Fresas",
+    "tipoProducto": "FRUTAS",
+    "precio": "2200",
+    "descripción": "500g",
+    "fechaDeVencimiento": "25/01/2025"
+  },
+  {
+    "idProducto": "VERDURAS100027",
+    "marca": "Espárragos",
+    "tipoProducto": "VERDURAS",
+    "precio": "1800",
+    "descripción": "500g",
+    "fechaDeVencimiento": "26/02/2025"
+  },
+  {
+    "idProducto": "LACTEOS100028",
+    "marca": "Yogur de Fresa",
+    "tipoProducto": "LACTEOS",
+    "precio": "1900",
+    "descripción": "1L",
+    "fechaDeVencimiento": "27/03/2025"
+  },
+  {
+    "idProducto": "SNACKS100029",
+    "marca": "Barras de Granola",
+    "tipoProducto": "SNACKS",
+    "precio": "8500",
+    "descripción": "300g",
+    "fechaDeVencimiento": "28/04/2025"
+  },
+  {
+    "idProducto": "BEBIDAS100030",
+    "marca": "Agua de Coco",
+    "tipoProducto": "BEBIDAS",
+    "precio": "2000",
+    "descripción": "1L",
+    "fechaDeVencimiento": "29/05/2025"
+  }
+]

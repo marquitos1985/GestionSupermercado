@@ -5,10 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import usuarios.clientes.Cliente;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class GestorProductos {
@@ -17,6 +14,8 @@ public class GestorProductos {
     public GestorProductos() {
         this.productos = new TreeSet<>();
     }
+
+    //todo--> CREAR METODO ALTA PRODUCTO, TENIENDO EN CUENTA QUE SE LO IDENTIFICA SEGUN SU DESCRIPCION / NOMBRE PARA VERIFICAR QUE NO EXISTA
 
 
     public boolean agregarProducto(Producto producto) { // retorna true si el producto es agregado / false si no.
@@ -98,6 +97,23 @@ public class GestorProductos {
     public void listarProductos(){
         this.productos.stream().forEach(producto -> System.out.println(producto));
     }
+
+    public int buscarUltimoIntId(TipoProducto tipoProducto){// genera un nuevo id por tipo de producto a generar
+        int salida = 100001;
+        List<Producto> lista = this.productos.stream().filter(producto -> producto.getTipoProducto().equals(tipoProducto)).collect(Collectors.toList());
+        if(lista.size() != 0){
+        List<Integer> numerosIdProducto = new ArrayList<>();
+        for (Producto producto: lista){
+            numerosIdProducto.add(Integer.parseInt(producto.getIdProducto().replace(producto.getTipoProducto().toString(), "")));//quita el tipo de producto del ID y pasa a entero la parte del numero
+        }
+            salida = Collections.max(numerosIdProducto) + 1;
+        }
+        return salida;
+    }
+
+
+
+
 
     public boolean levantarArchivoJsonProductos(){
         try {

@@ -5,10 +5,11 @@ import java.util.Objects;
 
 public class Producto implements Comparable {
     private String idProducto;
+    //todo--> AGREGAR NOMBRE PARA PODER COMPARAR Y VERIFICAR LA EXISTENCIA JUNTO CON LA MARCA
     private String marca;
     private TipoProducto tipoProducto;
     private float precio;
-    private String descripcion;
+    private String descripcion;//AGREGA INFORMACION ADICIONAL
     private String fechaDeVencimiento;
 
     //private static int idBase = 10000;
@@ -22,6 +23,7 @@ public class Producto implements Comparable {
         this.precio = precio;
         this.descripcion = descripcion;
         this.fechaDeVencimiento = fechaDeVencimiento;
+
     }
 
     public Producto() {
@@ -31,7 +33,7 @@ public class Producto implements Comparable {
         return idProducto;
     }
 
-    protected void setIdProducto(String idProducto) {
+    private void setIdProducto(String idProducto) {
         this.idProducto = idProducto;
     }
 
