@@ -13,18 +13,12 @@ import java.util.stream.Collectors;
 
 public class GestorProductos {
     private TreeSet<Producto> productos;
-    //private LinkedList<Producto> productos;
 
     public GestorProductos() {
         this.productos = new TreeSet<>();
     }
 
 
-    /*
-    public GestorProductos() {
-        this.productos = new LinkedList<>();
-    }
-     */
     public boolean agregarProducto(Producto producto) { // retorna true si el producto es agregado / false si no.
         return this.productos.add(producto);
     }
@@ -104,12 +98,12 @@ public class GestorProductos {
     public void listarProductos(){
         this.productos.stream().forEach(producto -> System.out.println(producto));
     }
-    /*
+
     public boolean levantarArchivoJsonProductos(){
         try {
             ObjectMapper mapeador= new ObjectMapper();
-            ArrayList<Producto> prod = mapeador.readValue(new File("productos.json"), new TypeReference<ArrayList<Producto>>(){});
-            this.productos = new TreeSet<>();
+            ArrayList<Producto> productos = mapeador.readValue(new File("productos.json"), new TypeReference<ArrayList<Producto>>(){});
+            this.productos = new TreeSet<>(productos);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -119,8 +113,8 @@ public class GestorProductos {
     public boolean guardarArchivoJsonProductos(){
         try{
             ObjectMapper mapeador = new ObjectMapper();
-            List<Producto> productosList = new ArrayList<>();
-            mapeador.writeValue(new File("productos.json"), productosList);
+            List<Producto> productoList = new ArrayList<>(productos);
+            mapeador.writeValue(new File("productos.json"), productoList);
             return true;
         }catch (Exception e) {
             e.printStackTrace();
@@ -128,6 +122,6 @@ public class GestorProductos {
         }
     }
 
-     */
+
 
 }
