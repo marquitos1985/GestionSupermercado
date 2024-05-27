@@ -7,6 +7,5 @@ public class Main {
         gestorAdministrador.levantarArchivoJsonAdministradores();
         gestorAdministrador.modificarSueldoAdministrador(42597483,80000F);
         gestorAdministrador.guardarArchivoJsonAdministradores();
-
     }
 }
