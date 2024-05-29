@@ -15,7 +15,8 @@ public class GestorProductos {
         this.productos = new TreeSet<>();
     }
 
-    //todo--> CREAR METODO ALTA PRODUCTO, TENIENDO EN CUENTA QUE SE LO IDENTIFICA SEGUN SU DESCRIPCION / NOMBRE PARA VERIFICAR QUE NO EXISTA
+    //todo--> CREAR METODO ALTA PRODUCTO, TENIENDO EN CUENTA QUE SE LO IDENTIFICA SEGUN SU DESCRIPCION / NOMBRE
+    //        PARA VERIFICAR QUE NO EXISTA
 
 
     public boolean agregarProducto(Producto producto) { // retorna true si el producto es agregado / false si no.
