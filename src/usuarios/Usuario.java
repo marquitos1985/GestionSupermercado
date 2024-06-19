@@ -1,4 +1,18 @@
 package usuarios;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
+import usuarios.clientes.Cliente;
+import usuarios.empleados.administrador.Administrador;
+import usuarios.empleados.vendedor.Vendedor;
+
+@JsonTypeInfo(use = Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonSubTypes({
+        @Type(value = Cliente.class, name = "cliente"),
+        @Type(value = Administrador.class, name = "administrador"),
+        @Type(value = Vendedor.class, name = "vendedor")
+})
 
 public abstract class Usuario {
 
@@ -13,6 +27,9 @@ public abstract class Usuario {
     private Boolean activo;
 
     private String email;
+
+
+
 
     public Usuario(String nombreCompleto, Integer dni, String direccion, String telefono, Boolean activo, String email) {
         this.nombreCompleto = nombreCompleto;

@@ -5,6 +5,10 @@ import usuarios.empleados.Empleado;
 
 public class Administrador extends Empleado implements Comparable<Administrador>{
 
+    public Administrador ( ){
+
+    }
+
     public Administrador(String nombreCompleto, Integer dni, String direccion, String telefono, Boolean activo, String email, String contraseña, Float sueldo) {
         super(nombreCompleto, dni, direccion, telefono, activo, email, contraseña, sueldo);
     }

@@ -5,6 +5,9 @@ public class Cliente extends Usuario implements Comparable<Cliente> {
 
     private Boolean socio;
 
+    public Cliente () {
+
+    }
 
     public Cliente(String nombreCompleto, Integer dni, String direccion, String telefono, Boolean activo, String email) {
         super(nombreCompleto, dni, direccion, telefono, activo, email);

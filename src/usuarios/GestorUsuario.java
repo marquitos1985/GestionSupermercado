@@ -1,38 +1,102 @@
 package usuarios;
+
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import usuarios.Usuario;
+import usuarios.clientes.Cliente;
+import usuarios.empleados.Empleado;
+import usuarios.empleados.administrador.Administrador;
+import usuarios.empleados.vendedor.Vendedor;
+
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeSet;
 
 public class GestorUsuario<T extends Usuario & Comparable<T>> {
-    private TreeSet<T> usuarios;
+
+    private List<Cliente> clientes;
+    private List<Administrador> administradores;
+    private List<Vendedor> vendedores;
     private ObjectMapper objectMapper;
 
     public GestorUsuario() {
-        this.usuarios = new TreeSet<>();
+        this.clientes = new ArrayList<>();
+        this.administradores = new ArrayList<>();
+        this.vendedores = new ArrayList<>();
         this.objectMapper = new ObjectMapper();
     }
 
     public boolean agregarUsuario(T usuarioNuevo) {
-        return usuarios.add(usuarioNuevo);
+        if (usuarioNuevo instanceof Cliente) {
+            return clientes.add((Cliente) usuarioNuevo);
+        } else if (usuarioNuevo instanceof Administrador) {
+            return administradores.add((Administrador) usuarioNuevo);
+        } else if (usuarioNuevo instanceof Vendedor) {
+            return vendedores.add((Vendedor) usuarioNuevo);
+        } else {
+            return false;
+        }
+    }
+
+    public boolean modificarSueldoUsario(Integer dni, float sueldoNuevo) {
+        T usuario = buscarUsuarioPorDni(dni);
+        if (usuario != null && usuario instanceof Empleado) {
+            Empleado empleado = (Empleado) usuario;
+            if (empleado instanceof Administrador) {
+                administradores.remove(usuario);
+                empleado.setSueldo(sueldoNuevo);
+                return administradores.add((Administrador) empleado);
+            } else if (empleado instanceof Vendedor) {
+                vendedores.remove(usuario);
+                empleado.setSueldo(sueldoNuevo);
+                return vendedores.add((Vendedor) empleado);
+            }
+        }
+        return false;
     }
 
     public boolean crearUsuario(T usuarioNuevo) {
-        for (T usuario : usuarios) {
-            if (usuario.getDni().equals(usuarioNuevo.getDni())) {
-                return false;
+        if (usuarioNuevo instanceof Cliente) {
+            for (Cliente cliente : clientes) {
+                if (cliente.getDni().equals(usuarioNuevo.getDni())) {
+                    return false;
+                }
             }
+            return clientes.add((Cliente) usuarioNuevo);
+        } else if (usuarioNuevo instanceof Administrador) {
+            for (Administrador admin : administradores) {
+                if (admin.getDni().equals(usuarioNuevo.getDni())) {
+                    return false;
+                }
+            }
+            return administradores.add((Administrador) usuarioNuevo);
+        } else if (usuarioNuevo instanceof Vendedor) {
+            for (Vendedor vendedor : vendedores) {
+                if (vendedor.getDni().equals(usuarioNuevo.getDni())) {
+                    return false;
+                }
+            }
+            return vendedores.add((Vendedor) usuarioNuevo);
+        } else {
+            return false;
         }
-        return agregarUsuario(usuarioNuevo);
     }
 
     public T buscarUsuarioPorDni(Integer dni) {
-        for (T usuario : usuarios) {
-            if (usuario.getDni().equals(dni)) {
-                return usuario;
+        for (Cliente cliente : clientes) {
+            if (cliente.getDni().equals(dni)) {
+                return (T) cliente;
+            }
+        }
+        for (Administrador admin : administradores) {
+            if (admin.getDni().equals(dni)) {
+                return (T) admin;
+            }
+        }
+        for (Vendedor vendedor : vendedores) {
+            if (vendedor.getDni().equals(dni)) {
+                return (T) vendedor;
             }
         }
         return null;
@@ -41,9 +105,8 @@ public class GestorUsuario<T extends Usuario & Comparable<T>> {
     public boolean modificarNombreUsuario(Integer dni, String nuevoNombreCompleto) {
         T usuario = buscarUsuarioPorDni(dni);
         if (usuario != null) {
-            usuarios.remove(usuario);
             usuario.setNombreCompleto(nuevoNombreCompleto);
-            return agregarUsuario(usuario);
+            return true;
         }
         return false;
     }
@@ -51,9 +114,8 @@ public class GestorUsuario<T extends Usuario & Comparable<T>> {
     public boolean modificarDireccionUsuario(Integer dni, String nuevaDireccion) {
         T usuario = buscarUsuarioPorDni(dni);
         if (usuario != null) {
-            usuarios.remove(usuario);
             usuario.setDireccion(nuevaDireccion);
-            return agregarUsuario(usuario);
+            return true;
         }
         return false;
     }
@@ -61,9 +123,8 @@ public class GestorUsuario<T extends Usuario & Comparable<T>> {
     public boolean modificarTelefonoUsuario(Integer dni, String nuevoTelefono) {
         T usuario = buscarUsuarioPorDni(dni);
         if (usuario != null) {
-            usuarios.remove(usuario);
             usuario.setTelefono(nuevoTelefono);
-            return agregarUsuario(usuario);
+            return true;
         }
         return false;
     }
@@ -71,19 +132,38 @@ public class GestorUsuario<T extends Usuario & Comparable<T>> {
     public boolean modificarEmailUsuario(Integer dni, String nuevoEmail) {
         T usuario = buscarUsuarioPorDni(dni);
         if (usuario != null) {
-            usuarios.remove(usuario);
             usuario.setEmail(nuevoEmail);
-            return agregarUsuario(usuario);
+            return true;
         }
         return false;
     }
 
     public boolean levantarArchivoJsonUsuarios(String nombreArchivo) {
         try {
-            List<T> usuariosList = objectMapper.readValue(new File(nombreArchivo), new TypeReference<List<T>>() {});
-            this.usuarios = new TreeSet<>(usuariosList);
+            List<Object> usuariosGenericos = objectMapper.readValue(new File(nombreArchivo), new TypeReference<List<Object>>() {});
+            for (Object usuarioGenerico : usuariosGenericos) {
+                JsonNode nodo = objectMapper.valueToTree(usuarioGenerico);
+                String type = nodo.get("type").asText();
+                switch (type) {
+                    case "cliente":
+                        Cliente cliente = objectMapper.convertValue(usuarioGenerico, Cliente.class);
+                        clientes.add(cliente);
+                        break;
+                    case "administrador":
+                        Administrador administrador = objectMapper.convertValue(usuarioGenerico, Administrador.class);
+                        administradores.add(administrador);
+                        break;
+                    case "vendedor":
+                        Vendedor vendedor = objectMapper.convertValue(usuarioGenerico, Vendedor.class);
+                        vendedores.add(vendedor);
+                        break;
+                    default:
+                        System.out.println("Tipo de usuario no reconocido: " + type);
+                        break;
+                }
+            }
             return true;
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
             return false;
         }
@@ -91,8 +171,11 @@ public class GestorUsuario<T extends Usuario & Comparable<T>> {
 
     public boolean guardarArchivoJsonUsuarios(String nombreArchivo) {
         try {
-            List<T> usuariosList = new ArrayList<>(usuarios);
-            objectMapper.writeValue(new File(nombreArchivo), usuariosList);
+            List<Object> usuarios = new ArrayList<>();
+            usuarios.addAll(clientes);
+            usuarios.addAll(administradores);
+            usuarios.addAll(vendedores);
+            objectMapper.writeValue(new File(nombreArchivo), usuarios);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -104,7 +187,8 @@ public class GestorUsuario<T extends Usuario & Comparable<T>> {
         T usuario = buscarUsuarioPorDni(dni);
         if (usuario != null) {
             System.out.println(usuario.toString());
+        } else {
+            System.out.println("Usuario con DNI " + dni + " no encontrado.");
         }
     }
 }
-

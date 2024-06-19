@@ -1,15 +1,19 @@
 import productos.GestorProductos;
 import productos.Producto;
 import productos.TipoProducto;
+import usuarios.GestorUsuario;
+import usuarios.empleados.administrador.Administrador;
 import usuarios.empleados.administrador.GestorAdministrador;
 import usuarios.empleados.vendedor.GestorVendedores;
 
 public class Main {
     public static void main(String[] args) {
-        GestorAdministrador gestorAdministrador = new GestorAdministrador();
-        gestorAdministrador.levantarArchivoJsonAdministradores();
-        gestorAdministrador.modificarSueldoAdministrador(42597483,80000F);
-        gestorAdministrador.guardarArchivoJsonAdministradores();
+
+        GestorUsuario<Administrador> gestorUsuario = new GestorUsuario<>();
+        gestorUsuario.levantarArchivoJsonUsuarios("usuarios.json");
+        gestorUsuario.modificarSueldoUsario( 65432187, 1);
+        gestorUsuario.guardarArchivoJsonUsuarios("usuarios.json");
+
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

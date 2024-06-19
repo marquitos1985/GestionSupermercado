@@ -6,6 +6,10 @@ public class Vendedor extends Empleado implements Comparable<Vendedor> {
 
     private Turno turnoLaboral;
 
+    public Vendedor () {
+
+    }
+
     public Vendedor(String nombreCompleto, Integer dni, String direccion, String telefono, Boolean activo, String email, String contraseña, Float sueldo, Turno turnoLaboral) {
         super(nombreCompleto, dni, direccion, telefono, activo, email, contraseña, sueldo);
         this.turnoLaboral = turnoLaboral;
