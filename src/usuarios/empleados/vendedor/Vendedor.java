@@ -2,11 +2,11 @@ package usuarios.empleados.vendedor;
 
 import usuarios.empleados.Empleado;
 
-public class Vendedor extends Empleado implements Comparable {
+public class Vendedor extends Empleado implements Comparable<Vendedor> {
 
     private Turno turnoLaboral;
 
-    public Vendedor(String nombreCompleto, Integer dni, String direccion, String telefono, Boolean activo, String email, String contraseña, Float sueldo) {
+    public Vendedor(String nombreCompleto, Integer dni, String direccion, String telefono, Boolean activo, String email, String contraseña, Float sueldo, Turno turnoLaboral) {
         super(nombreCompleto, dni, direccion, telefono, activo, email, contraseña, sueldo);
         this.turnoLaboral = turnoLaboral;
     }
@@ -19,12 +19,13 @@ public class Vendedor extends Empleado implements Comparable {
         this.turnoLaboral = turnoLaboral;
     }
 
+    @Override
     public String toString() {
         return String.format(
                 "=====================\n" +
                         " Detalles del Vendedor \n" +
                         "=====================\n" +
-                        "%s" +  // Llama al toString de la clase Usuario
+                        "%s" +  // Llama al toString de la clase Empleado
                         "Turno Laboral: %s (%s)\n" +
                         "=====================\n",
                 super.toString(),
@@ -32,13 +33,12 @@ public class Vendedor extends Empleado implements Comparable {
     }
 
     @Override
-    public int compareTo(Object o) {
-        if (o instanceof Vendedor) {
-            Vendedor otroVendedor = (Vendedor) o;
-            return this.getDni().compareTo(otroVendedor.getDni());
+    public int compareTo(Vendedor otroVendedor) {
+        if (otroVendedor == null) {
+            throw new NullPointerException("El vendedor a comparar no puede ser nulo");
         }
-        return 0;
+        return this.getDni().compareTo(otroVendedor.getDni());
     }
-
 }
+
 

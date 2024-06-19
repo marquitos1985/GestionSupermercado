@@ -3,12 +3,8 @@ package usuarios.empleados.administrador;
 import usuarios.clientes.Cliente;
 import usuarios.empleados.Empleado;
 
-public class Administrador extends Empleado implements Comparable{
+public class Administrador extends Empleado implements Comparable<Administrador>{
 
-
-    public Administrador(){
-
-    }
     public Administrador(String nombreCompleto, Integer dni, String direccion, String telefono, Boolean activo, String email, String contraseña, Float sueldo) {
         super(nombreCompleto, dni, direccion, telefono, activo, email, contraseña, sueldo);
     }
@@ -26,11 +22,12 @@ public class Administrador extends Empleado implements Comparable{
     }
 
     @Override
-    public int compareTo(Object o) {
-        if (o instanceof Administrador) {
-            Administrador otroAdministrador = (Administrador) o;
-            return this.getDni().compareTo(otroAdministrador.getDni());
+    public int compareTo(Administrador otroAdministrador) {
+        if (otroAdministrador == null ) {
+            throw new NullPointerException("El administrador a comparar no puede ser nulo");
         }
-        return 0;
+           return this.getDni().compareTo(otroAdministrador.getDni());
     }
 }
+
+

@@ -1,16 +1,12 @@
 package usuarios.clientes;
-
-
 import usuarios.Usuario;
 
-public class Cliente extends Usuario implements Comparable{
+public class Cliente extends Usuario implements Comparable<Cliente> {
 
     private Boolean socio;
 
-    public Cliente(){
 
-    }
-    public Cliente(String nombreCompleto,Integer dni, String direccion, String telefono, Boolean activo, String email) {
+    public Cliente(String nombreCompleto, Integer dni, String direccion, String telefono, Boolean activo, String email) {
         super(nombreCompleto, dni, direccion, telefono, activo, email);
         this.socio = true;
     }
@@ -24,13 +20,27 @@ public class Cliente extends Usuario implements Comparable{
     }
 
     @Override
-    public int compareTo(Object o) {
-        if (o instanceof Cliente) {
-            Cliente otroCliente = (Cliente) o;
-            return this.getDni().compareTo(otroCliente.getDni());
+    public int compareTo(Cliente otroCliente) {
+        if (otroCliente == null) {
+            throw new NullPointerException("El cliente a comparar no puede ser nulo");
         }
-        return 0;
+        return this.getDni().compareTo(otroCliente.getDni());
+    }
+
+    @Override
+    public String toString() {
+        return String.format(
+                "=====================\n" +
+                        " Detalles del Cliente \n" +
+                        "=====================\n" +
+                        "Nombre Completo: %s\n" +
+                        "DNI: %d\n" +
+                        "Dirección: %s\n" +
+                        "Teléfono: %s\n" +
+                        "Activo: %b\n" +
+                        "Email: %s\n" +
+                        "Socio: %b\n" +
+                        "=====================\n",
+                getNombreCompleto(), getDni(), getDireccion(), getTelefono(), getActivo(), getEmail(), socio);
     }
 }
-
-

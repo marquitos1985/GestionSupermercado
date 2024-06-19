@@ -22,13 +22,5 @@ public class Main {
         gestorProductos.listarProductos();
         //gestorProductos.guardarArchivoJsonProductos();
 
-
-
-
-
-
-
-
-
     }
 }
