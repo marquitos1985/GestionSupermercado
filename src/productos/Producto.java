@@ -3,9 +3,9 @@ package productos;
 import java.util.Comparator;
 import java.util.Objects;
 
-public class Producto implements Comparable {
+public class Producto implements Comparable<Producto> {
     private String idProducto;
-    //todo--> AGREGAR NOMBRE PARA PODER COMPARAR Y VERIFICAR LA EXISTENCIA JUNTO CON LA MARCA
+    private String nombre;
     private String marca;
     private TipoProducto tipoProducto;
     private float precio;
@@ -14,10 +14,11 @@ public class Producto implements Comparable {
 
     //private static int idBase = 10000;
 
-    public Producto(String idProducto, String marca, TipoProducto tipoProducto,
+    public Producto(String idProducto, String nombre, String marca, TipoProducto tipoProducto,
                     Float precio, String descripcion, String fechaDeVencimiento) {
 
         this.idProducto = idProducto;
+        this.nombre = nombre;
         this.marca = marca;
         this.tipoProducto = tipoProducto;
         this.precio = precio;
@@ -36,7 +37,13 @@ public class Producto implements Comparable {
     private void setIdProducto(String idProducto) {
         this.idProducto = idProducto;
     }
+    public String getNombre() {
+        return nombre;
+    }
 
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
     public String getMarca() {
         return marca;
     }
@@ -91,14 +98,15 @@ public class Producto implements Comparable {
     }
 
     @Override
-    public int compareTo(Object o) {
-        return this.getIdProducto().compareTo(((Producto) o).getIdProducto());
+    public int compareTo(Producto o) {
+        return this.idProducto.compareTo(o.getIdProducto());
     }
 
     @Override
     public String toString() {
         return "Producto{" +
                 "idProducto='" + idProducto + '\'' +
+                ", nombre='" + nombre + '\'' +
                 ", marca='" + marca + '\'' +
                 ", tipoProducto=" + tipoProducto +
                 ", precio=" + precio +

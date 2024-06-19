@@ -4,10 +4,10 @@ public class ProductoPorPeso extends Producto {//// puede que hay a q implementa
     private float peso;
     private float precioPorPeso;
 
-    public ProductoPorPeso(String idProducto, String marca, TipoProducto tipoProducto,
+    public ProductoPorPeso(String idProducto, String nombre, String marca, TipoProducto tipoProducto,
                            float precio, String descripcion, String fechaDeVencimiento,
                            float peso, float precioPorPeso) {
-        super(idProducto, marca, tipoProducto, precio, descripcion, fechaDeVencimiento);
+        super(idProducto, nombre, marca, tipoProducto, precio, descripcion, fechaDeVencimiento);
         this.peso = peso;
         this.precioPorPeso = precioPorPeso;
     }
