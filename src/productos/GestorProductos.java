@@ -15,12 +15,12 @@ public class GestorProductos {
         this.productos = new TreeSet<>();
     }
 
-    public Producto crearProducto (String idProducto, String nombre, String marca, TipoProducto tipoProducto, Float precio, String descripcion, String fechaDeVencimiento) {
-        return new Producto(crearId(tipoProducto), nombre, marca, tipoProducto, precio, descripcion, fechaDeVencimiento);
+    public Producto crearProducto (String idProducto, String nombre, String marca, TipoProducto tipoProducto, Float precio, String descripcion, String fechaDeVencimiento, int stock) {
+        return new Producto(crearId(tipoProducto), nombre, marca, tipoProducto, precio, descripcion, fechaDeVencimiento, stock);
     }
-    public Producto crearProductoPorPeso (String idProducto, String nombre, String marca, TipoProducto tipoProducto, float precio, String descripcion, String fechaDeVencimiento,
+    public Producto crearProductoPorPeso (String idProducto, String nombre, String marca, TipoProducto tipoProducto, float precio, String descripcion, String fechaDeVencimiento, int stock,
                                           float peso, float precioPorPeso){
-        return new ProductoPorPeso(crearId(tipoProducto), nombre, marca, tipoProducto, precio, descripcion, fechaDeVencimiento, peso, precioPorPeso);
+        return new ProductoPorPeso(crearId(tipoProducto), nombre, marca, tipoProducto, precio, descripcion, fechaDeVencimiento, stock, peso, precioPorPeso);
 
     }
 
@@ -138,6 +138,27 @@ public class GestorProductos {
         }
     }
 
+    public void modificarStock (Producto producto, int cantidad) throws StockException {
+        if (this.productos.contains(producto)){
+            if (cantidad >= 0){
+                producto.setStock(producto.getStock() + cantidad);
+            }else{
+                if(producto.getStock() >= cantidad){
+                    producto.setStock(producto.getStock() - cantidad);
 
+                } else {
+                    throw new StockException("Stock existente menor a stock a eliminar.");
+                }
+            }
+        } else {
+            if (cantidad >= 0) {
+                producto.setStock(cantidad);
+                this.productos.add(producto);
+
+            } else {
+                throw new StockException("Producto inexistente, stock negativo.");
+            }
+        }
+    }
 
 }

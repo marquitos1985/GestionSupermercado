@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class GestorUsuario<T extends Usuario & Comparable<T>> {
 
@@ -168,6 +169,7 @@ public class GestorUsuario<T extends Usuario & Comparable<T>> {
             return false;
         }
     }
+    /*
 
     public boolean guardarArchivoJsonUsuarios(String nombreArchivo) {
         try {
@@ -175,6 +177,37 @@ public class GestorUsuario<T extends Usuario & Comparable<T>> {
             usuarios.addAll(clientes);
             usuarios.addAll(administradores);
             usuarios.addAll(vendedores);
+            objectMapper.writeValue(new File(nombreArchivo), usuarios);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+     */
+    public boolean guardarArchivoJsonUsuarios(String nombreArchivo) {
+        try {
+            List<Map<String, Object>> usuarios = new ArrayList<>();
+
+            for (Cliente cliente : clientes) {
+                Map<String, Object> clienteMap = objectMapper.convertValue(cliente, Map.class);
+                clienteMap.put("type", "cliente");
+                usuarios.add(clienteMap);
+            }
+
+            for (Administrador administrador : administradores) {
+                Map<String, Object> administradorMap = objectMapper.convertValue(administrador, Map.class);
+                administradorMap.put("type", "administrador");
+                usuarios.add(administradorMap);
+            }
+
+            for (Vendedor vendedor : vendedores) {
+                Map<String, Object> vendedorMap = objectMapper.convertValue(vendedor, Map.class);
+                vendedorMap.put("type", "vendedor");
+                usuarios.add(vendedorMap);
+            }
+
             objectMapper.writeValue(new File(nombreArchivo), usuarios);
             return true;
         } catch (Exception e) {

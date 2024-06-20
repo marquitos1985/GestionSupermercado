@@ -11,11 +11,12 @@ public class Producto implements Comparable<Producto> {
     private float precio;
     private String descripcion;//AGREGA INFORMACION ADICIONAL
     private String fechaDeVencimiento;
+    private int stock;
 
     //private static int idBase = 10000;
 
     public Producto(String idProducto, String nombre, String marca, TipoProducto tipoProducto,
-                    Float precio, String descripcion, String fechaDeVencimiento) {
+                    Float precio, String descripcion, String fechaDeVencimiento, int stock) {
 
         this.idProducto = idProducto;
         this.nombre = nombre;
@@ -24,6 +25,12 @@ public class Producto implements Comparable<Producto> {
         this.precio = precio;
         this.descripcion = descripcion;
         this.fechaDeVencimiento = fechaDeVencimiento;
+        if(stock >= 0){
+            this.stock = stock;
+        }else {
+            this.stock = 0;
+        }
+
 
     }
 
@@ -60,11 +67,11 @@ public class Producto implements Comparable<Producto> {
         this.tipoProducto = tipoProducto;
     }
 
-    public Float getPrecio() {
+    public float getPrecio() {
         return precio;
     }
 
-    protected void setPrecio(Float precio) {
+    protected void setPrecio(float precio) {
         this.precio = precio;
     }
 
@@ -82,6 +89,14 @@ public class Producto implements Comparable<Producto> {
 
     protected void setFechaDeVencimiento(String fechaDeVencimiento) {
         this.fechaDeVencimiento = fechaDeVencimiento;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
     }
 
     @Override
