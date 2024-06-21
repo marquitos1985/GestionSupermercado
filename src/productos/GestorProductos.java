@@ -115,10 +115,10 @@ public class GestorProductos {
         return String.format("%s",tipoProducto.toString() + buscarUltimoIntId(tipoProducto));
     }
 
-    public boolean levantarArchivoJsonProductos(){
+    public boolean levantarArchivoJsonProductos(String nombreArchivo){
         try {
             ObjectMapper mapeador= new ObjectMapper();
-            ArrayList<Producto> productos = mapeador.readValue(new File("productos.json"), new TypeReference<ArrayList<Producto>>(){});
+            ArrayList<Producto> productos = mapeador.readValue(new File(nombreArchivo), new TypeReference<ArrayList<Producto>>(){});
             this.productos = new TreeSet<>(productos);
             return true;
         } catch (Exception e) {
@@ -126,11 +126,11 @@ public class GestorProductos {
             return false;
         }
     }
-    public boolean guardarArchivoJsonProductos(){
+    public boolean guardarArchivoJsonProductos(String nombreArchivo){
         try{
             ObjectMapper mapeador = new ObjectMapper();
             List<Producto> productoList = new ArrayList<>(productos);
-            mapeador.writeValue(new File("productos.json"), productoList);
+            mapeador.writeValue(new File(nombreArchivo), productoList);
             return true;
         }catch (Exception e) {
             e.printStackTrace();
