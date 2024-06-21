@@ -167,23 +167,7 @@ public class GestorUsuario<T extends Usuario & Comparable<T>> {
             return false;
         }
     }
-    /*
 
-    public boolean guardarArchivoJsonUsuarios(String nombreArchivo) {
-        try {
-            List<Object> usuarios = new ArrayList<>();
-            usuarios.addAll(clientes);
-            usuarios.addAll(administradores);
-            usuarios.addAll(vendedores);
-            objectMapper.writeValue(new File(nombreArchivo), usuarios);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-     */
     public boolean guardarArchivoJsonUsuarios(String nombreArchivo) {
         try {
             List<Map<String, Object>> usuarios = new ArrayList<>();

@@ -19,13 +19,9 @@ public class Main {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         GestorProductos gestorProductos = new GestorProductos();
-        Producto fanta = new Producto("BEBIDAS10010", "Bebida", "Fanta", TipoProducto.BEBIDAS, 2500f, "2.25LTS", "12/12/24", 1000);
-        Producto papasFritas = new Producto("SNACKS10020", "Papitas", "Lays", TipoProducto.SNACKS, 2800f, "120gr", "12/12/24" , 2000);
-        gestorProductos.agregarProducto(fanta);
-        gestorProductos.agregarProducto(papasFritas);
+        gestorProductos.levantarArchivoJsonProductos("productos.json");
         gestorProductos.listarProductos();
-        //gestorProductos.guardarArchivoJsonProductos();
-        //gestorProductos.guardarArchivoJsonProductos();
+
 
 
 

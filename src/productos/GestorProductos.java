@@ -1,18 +1,23 @@
 package productos;
-
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import usuarios.clientes.Cliente;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class GestorProductos {
     private TreeSet<Producto> productos;
+    private ObjectMapper objectMapper;
+
 
     public GestorProductos() {
         this.productos = new TreeSet<>();
+        this.objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
     public Producto crearProducto (String idProducto, String nombre, String marca, TipoProducto tipoProducto, Float precio, String descripcion, String fechaDeVencimiento, int stock) {
@@ -115,29 +120,49 @@ public class GestorProductos {
         return String.format("%s",tipoProducto.toString() + buscarUltimoIntId(tipoProducto));
     }
 
-    public boolean levantarArchivoJsonProductos(String nombreArchivo){
+    public boolean levantarArchivoJsonProductos(String nombreArchivo) {
         try {
-            ObjectMapper mapeador= new ObjectMapper();
-            ArrayList<Producto> productos = mapeador.readValue(new File(nombreArchivo), new TypeReference<ArrayList<Producto>>(){});
-            this.productos = new TreeSet<>(productos);
+            JsonNode root = objectMapper.readTree(new File(nombreArchivo));
+            for (JsonNode nodo : root) {
+                if (nodo.has("peso")) {
+                    ProductoPorPeso productoPorPeso = objectMapper.treeToValue(nodo, ProductoPorPeso.class);
+                    this.productos.add(productoPorPeso);
+                } else {
+                    Producto producto = objectMapper.treeToValue(nodo, Producto.class);
+                    this.productos.add(producto);
+                }
+            }
             return true;
-        } catch (Exception e) {
+        }catch (IOException e) {
             e.printStackTrace();
             return false;
         }
-    }
-    public boolean guardarArchivoJsonProductos(String nombreArchivo){
-        try{
-            ObjectMapper mapeador = new ObjectMapper();
-            List<Producto> productoList = new ArrayList<>(productos);
-            mapeador.writeValue(new File(nombreArchivo), productoList);
-            return true;
-        }catch (Exception e) {
-            e.printStackTrace();
-            return false;
         }
-    }
 
+
+
+    public boolean guardarArchivoJsonProductos(String nombreArchivo) {
+            try {
+                List<Map<String, Object>> productos = new ArrayList<>();
+
+                for (Producto prod : this.productos) {
+                    Map<String, Object> productosMap = objectMapper.convertValue(prod, Map.class);
+                    productosMap.put("type", "producto");
+                    productos.add(productosMap);
+                }
+                for (Producto peso : this.productos) {
+                    Map<String, Object> prodPesoMap = objectMapper.convertValue(peso, Map.class);
+                    prodPesoMap.put("type", "porPeso");
+                    productos.add(prodPesoMap);
+                }
+
+                objectMapper.writeValue(new File(nombreArchivo), productos);
+            return true;
+            }catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
     public void modificarStock (Producto producto, int cantidad) throws StockException {
         if (this.productos.contains(producto)){
             if (cantidad >= 0){

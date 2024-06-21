@@ -81,13 +81,13 @@ public class GestorSupermercado {
 
         for (TipoProducto tipo: TipoProducto.values()){
             productosJComboBox.addItem(tipo);
+
         }
 
 
         ingresarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 Vendedor vendedor = gestorVendedores.buscarUsuarioPorDni(Integer.valueOf(usuarioTextField.getText()));
                 if(vendedor != null){
                     if(vendedor.getContraseña().equals(new String(passwordField.getPassword()))){
@@ -128,15 +128,15 @@ public class GestorSupermercado {
         productosJComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
-                List <Producto> lista = gestorProductos.buscarPorTipo((TipoProducto) productosJComboBox.getSelectedItem());
-                productosScrollPane.createVerticalScrollBar();
-
-
+                TipoProducto tipoProductoSeleccionado = (TipoProducto)  productosJComboBox.getSelectedItem();
+                List <Producto> lista = gestorProductos.buscarPorTipo(tipoProductoSeleccionado);
+                DefaultListModel<String> model = new DefaultListModel<>();
+                for (Producto producto: lista) {
+                    model.addElement(producto.getNombre() + "- $" + producto.getPrecio() + "Stock: " + producto.getStock() );
+                }
+                productosJList.setModel(model);
             }
         });
-
-
     }
 
     private void inhabilitarBotones(){

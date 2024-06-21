@@ -4,6 +4,10 @@ public class ProductoPorPeso extends Producto {//// puede que hay a q implementa
     private float peso;
     private float precioPorPeso;
 
+    public ProductoPorPeso() {
+        // Constructor por defecto
+    }
+
     public ProductoPorPeso(String idProducto, String nombre, String marca, TipoProducto tipoProducto,
                            float precio, String descripcion, String fechaDeVencimiento,  int stock,
                            float peso, float precioPorPeso) {

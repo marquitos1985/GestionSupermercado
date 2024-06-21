@@ -6,14 +6,18 @@ import java.util.Objects;
 public class Producto implements Comparable<Producto> {
     private String idProducto;
     private String nombre;
+    private float precio;
     private String marca;
     private TipoProducto tipoProducto;
-    private float precio;
     private String descripcion;//AGREGA INFORMACION ADICIONAL
     private String fechaDeVencimiento;
     private int stock;
 
     //private static int idBase = 10000;
+
+
+
+
 
     public Producto(String idProducto, String nombre, String marca, TipoProducto tipoProducto,
                     Float precio, String descripcion, String fechaDeVencimiento, int stock) {
