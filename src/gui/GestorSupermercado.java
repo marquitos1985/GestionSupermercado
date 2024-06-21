@@ -71,7 +71,6 @@ public class GestorSupermercado {
         this.gestorProductos = new GestorProductos();
 
 
-
     }
 
     public void iniciarSistema(){
@@ -132,12 +131,26 @@ public class GestorSupermercado {
                 List <Producto> lista = gestorProductos.buscarPorTipo(tipoProductoSeleccionado);
                 DefaultListModel<String> model = new DefaultListModel<>();
                 for (Producto producto: lista) {
-                    model.addElement(producto.getNombre() + "- $" + producto.getPrecio() + "Stock: " + producto.getStock() );
+                    model.addElement( "id: "+ producto.getIdProducto() + producto.getNombre() + "- $" + producto.getPrecio() + "Stock: " + producto.getStock() );
                 }
                 productosJList.setModel(model);
             }
         });
+
+        agregarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                DefaultListModel<String> model = new DefaultListModel<>();
+                model.addElement(productosJList.getSelectedValue().toString());
+                carritoJList.setModel(model);
+                String id = productosJList.getSelectedValue().toString();
+
+            }
+        });
+
     }
+
 
     private void inhabilitarBotones(){
         buscarButton.setEnabled(false);
@@ -152,9 +165,11 @@ public class GestorSupermercado {
         this.gestorProductos.levantarArchivoJsonProductos("productos.json");
     }
 
+
     public static void main(String[] args) {
         GestorSupermercado gestor = new GestorSupermercado();
         gestor.iniciarSistema();
 
     }
+
 }
