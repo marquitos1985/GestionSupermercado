@@ -1,5 +1,4 @@
 package usuarios;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,7 +6,6 @@ import usuarios.clientes.Cliente;
 import usuarios.empleados.Empleado;
 import usuarios.empleados.administrador.Administrador;
 import usuarios.empleados.vendedor.Vendedor;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
