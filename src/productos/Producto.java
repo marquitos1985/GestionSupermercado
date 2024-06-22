@@ -123,7 +123,7 @@ public class Producto implements Comparable<Producto> {
 
     @Override
     public String toString() {
-        return String.format("ID: %s - %s - %s - %s - Descripcion: %s - Venc: %s - Stock: %s", this.idProducto, this.nombre, this.marca, this.tipoProducto, this.descripcion, this.fechaDeVencimiento, this.stock);
+        return String.format("ID: %s - %s - %s - %s - Descripcion: %s - Venc: %s - PRECIO $%s - Stock: %s", this.idProducto, this.nombre, this.marca, this.tipoProducto, this.descripcion, this.fechaDeVencimiento, this.precio, this.stock);
 
     }
     public String toStringResumido() {

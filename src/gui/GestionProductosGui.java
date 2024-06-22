@@ -48,6 +48,7 @@ public class GestionProductosGui {
     private JButton verButton;
     private GestorProductos gestorProductos;
     private Producto productoEliminar;
+    private Producto productoModificar;
 
     public GestionProductosGui(GestorProductos gestorProductos) {
 
@@ -76,6 +77,7 @@ public class GestionProductosGui {
 
 
         productoEliminar = null;
+        productoModificar = null;
 
 
         ////////////////////////////////////////////     SOLAPA CREAR     ////////////////////////////////////////////
@@ -117,19 +119,14 @@ public class GestionProductosGui {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(!(idProductoTextField1.getText().isEmpty() && idProductoTextField1.getText().isBlank())){
-                    Producto producto = gestorProductos.buscarPorId(idProductoTextField1.getText());
+                    productoModificar = gestorProductos.buscarPorId(idProductoTextField1.getText());
 
-                    if(producto != null){
+                    if(productoModificar != null){
                         JOptionPane.showMessageDialog(null, "Producto encontrado...");
-                        prodEncontradoLabel.setText(producto.toString());
-                        setCamposModificar(producto);
-
-
+                        prodEncontradoLabel.setText(productoModificar.toString());
+                        setCamposModificar(productoModificar);
 
                         modificarButton.setEnabled(true);
-
-
-
 
                     }else {
                         JOptionPane.showMessageDialog(null, "Producto inexistente...");
@@ -140,7 +137,30 @@ public class GestionProductosGui {
 
 
 
-        //TODO hacer boton modificar
+        modificarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                if(verificarCamposVaciosModificacion()){
+                    if(productoModificar instanceof ProductoPorPeso){
+                        gestorProductos.modificarProductoPorPeso((ProductoPorPeso) productoModificar, nombreTextField11.getText(),
+                                marcaTextField12.getText(), (TipoProducto) tipoProductoComboBox2.getSelectedItem(), Float.valueOf(precioTextField13.getText()),
+                                descripcionTextField14.getText(), venciminetoTextField15.getText(), Integer.valueOf(stockTextField16.getText()),
+                                Float.valueOf(pesoTextField17.getText()), Float.valueOf(precioPorPesoTextField18.getText()));
+                    }else {
+                        gestorProductos.modificarProducto(productoModificar, nombreTextField11.getText(),
+                                marcaTextField12.getText(), (TipoProducto) tipoProductoComboBox2.getSelectedItem(), Float.valueOf(precioTextField13.getText()),
+                                descripcionTextField14.getText(), venciminetoTextField15.getText(), Integer.valueOf(stockTextField16.getText()));
+                    }
+
+                    gestorProductos.guardarArchivoJsonProductos("productos.json");
+                    JOptionPane.showMessageDialog(null, "Se modificó el producto...");
+
+
+                }
+
+            }
+        });
         ////////////////////////////////////////////     SOLAPA ELIMINAR     ////////////////////////////////////////////
         buscarButton1.addActionListener(new ActionListener() {
             @Override
@@ -161,8 +181,9 @@ public class GestionProductosGui {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JOptionPane.showMessageDialog(null, "Se eliminó el producto: " + productoEliminar);
+
                 gestorProductos.eliminarProducto(productoEliminar);
-                //TODO hacer guardado json
+                gestorProductos.guardarArchivoJsonProductos("productos.json");
             }
         });
 
@@ -209,6 +230,29 @@ public class GestionProductosGui {
             if(porPesoCheckBox1.isSelected() &&
                     !(pesoTextField8.getText().isEmpty() && pesoTextField8.getText().isBlank()) &&
                     !(precioPesoTextField9.getText().isEmpty() && precioPesoTextField9.getText().isBlank())){
+                salida = true;
+
+            }else {
+                salida = true;
+            }
+
+        }
+
+        return salida;
+    }
+
+    public boolean verificarCamposVaciosModificacion(){
+
+        boolean salida = false;
+        if (!(nombreTextField11.getText().isEmpty() && nombreTextField11.getText().isBlank()) &&
+                !(marcaTextField12.getText().isEmpty() && marcaTextField12.getText().isBlank()) &&
+                !(precioTextField13.getText().isEmpty() && precioTextField13.getText().isBlank()) &&
+                !(descripcionTextField14.getText().isEmpty() && descripcionTextField14.getText().isBlank()) &&
+                !(venciminetoTextField15.getText().isEmpty() && venciminetoTextField15.getText().isBlank()) &&
+                !(stockTextField16.getText().isEmpty() && stockTextField16.getText().isBlank())){
+            if(porPesoCheckBox1.isSelected() &&
+                    !(pesoTextField17.getText().isEmpty() && pesoTextField17.getText().isBlank()) &&
+                    !(precioPorPesoTextField18.getText().isEmpty() && precioPorPesoTextField18.getText().isBlank())){
                 salida = true;
 
             }else {

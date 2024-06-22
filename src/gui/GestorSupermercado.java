@@ -104,6 +104,7 @@ public class GestorSupermercado {
 
                 if(!(usuarioTextField.getText().isBlank() && usuarioTextField.getText().isEmpty())){
                     Vendedor vendedor = gestorVendedores.buscarUsuarioPorDni(Integer.valueOf(usuarioTextField.getText()));
+                    System.out.println(vendedor);
                     if(vendedor != null){
                         if(vendedor.getContraseña().equals(new String(passwordField.getPassword()))){
                             JOptionPane.showMessageDialog(null, "Ingreso exitoso....");
