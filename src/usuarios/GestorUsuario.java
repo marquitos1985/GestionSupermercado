@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import usuarios.clientes.Cliente;
 import usuarios.empleados.Empleado;
 import usuarios.empleados.administrador.Administrador;
+import usuarios.empleados.vendedor.Turno;
 import usuarios.empleados.vendedor.Vendedor;
 import java.io.File;
 import java.io.IOException;
@@ -38,6 +39,41 @@ public class GestorUsuario<T extends Usuario & Comparable<T>> {
         }
     }
 
+    public Cliente crearCliente(String nombreCompleto, Integer dni, String direccion, String telefono, Boolean activo, String email) {
+        return new Cliente(nombreCompleto, dni, direccion, telefono, true, email);
+    }
+
+    public Vendedor crearVendedor(String nombreCompleto, Integer dni, String direccion, String telefono, Boolean activo, String email, String contraseña, Float sueldo, Turno turnoLaboral) {
+        return new Vendedor(nombreCompleto, dni, direccion, telefono, true, email, contraseña, sueldo, turnoLaboral);
+    }
+
+    public Administrador crearAdministrador(String nombreCompleto, Integer dni, String direccion, String telefono, Boolean activo, String email, String contraseña, Float sueldo) {
+        return new Administrador(nombreCompleto, dni, direccion, telefono, true, email, contraseña, sueldo);
+    }
+
+    public Usuario crearUsuario(String tipo, String nombreCompleto, Integer dni, String direccion, String telefono, Boolean activo, String email, String contraseña, Float sueldo, Turno turnoLaboral) {
+        if (dniExiste(dni)) {
+            return null;
+        }
+
+        switch (tipo) {
+            case "Cliente":
+                return crearCliente(nombreCompleto, dni, direccion, telefono, true, email);
+            case "Vendedor":
+                return crearVendedor(nombreCompleto, dni, direccion, telefono, true, email, contraseña, sueldo, turnoLaboral);
+            case "Administrador":
+                return crearAdministrador(nombreCompleto, dni, direccion, telefono, true, email, contraseña, sueldo);
+            default:
+                return null;
+        }
+    }
+
+    public boolean dniExiste(Integer dni) {
+        return  this.clientes.stream().anyMatch(cliente -> cliente.getDni().equals(dni)) ||
+                this.vendedores.stream().anyMatch(vendedor -> vendedor.getDni().equals(dni)) ||
+                this.administradores.stream().anyMatch(administrador -> administrador.getDni().equals(dni));
+    }
+
     public boolean modificarSueldoUsario(Integer dni, float sueldoNuevo) {
         T usuario = buscarUsuarioPorDni(dni);
         if (usuario != null && usuario instanceof Empleado) {
@@ -55,32 +91,32 @@ public class GestorUsuario<T extends Usuario & Comparable<T>> {
         return false;
     }
 
-    public boolean crearUsuario(T usuarioNuevo) {
-        if (usuarioNuevo instanceof Cliente) {
-            for (Cliente cliente : clientes) {
-                if (cliente.getDni().equals(usuarioNuevo.getDni())) {
-                    return false;
-                }
-            }
-            return clientes.add((Cliente) usuarioNuevo);
-        } else if (usuarioNuevo instanceof Administrador) {
-            for (Administrador admin : administradores) {
-                if (admin.getDni().equals(usuarioNuevo.getDni())) {
-                    return false;
-                }
-            }
-            return administradores.add((Administrador) usuarioNuevo);
-        } else if (usuarioNuevo instanceof Vendedor) {
-            for (Vendedor vendedor : vendedores) {
-                if (vendedor.getDni().equals(usuarioNuevo.getDni())) {
-                    return false;
-                }
-            }
-            return vendedores.add((Vendedor) usuarioNuevo);
-        } else {
-            return false;
-        }
-    }
+//    public boolean crearUsuario(T usuarioNuevo) {
+//        if (usuarioNuevo instanceof Cliente) {
+//            for (Cliente cliente : clientes) {
+//                if (cliente.getDni().equals(usuarioNuevo.getDni())) {
+//                    return false;
+//                }
+//            }
+//            return clientes.add((Cliente) usuarioNuevo);
+//        } else if (usuarioNuevo instanceof Administrador) {
+//            for (Administrador admin : administradores) {
+//                if (admin.getDni().equals(usuarioNuevo.getDni())) {
+//                    return false;
+//                }
+//            }
+//            return administradores.add((Administrador) usuarioNuevo);
+//        } else if (usuarioNuevo instanceof Vendedor) {
+//            for (Vendedor vendedor : vendedores) {
+//                if (vendedor.getDni().equals(usuarioNuevo.getDni())) {
+//                    return false;
+//                }
+//            }
+//            return vendedores.add((Vendedor) usuarioNuevo);
+//        } else {
+//            return false;
+//        }
+//    }
 
     public T buscarUsuarioPorDni(Integer dni) {
         for (Cliente cliente : clientes) {
