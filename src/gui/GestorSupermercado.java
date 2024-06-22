@@ -259,6 +259,13 @@ public class GestorSupermercado {
             }
         });
 
+        ingresarButton3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GestionUsuariosGui gestionUsuariosGui = new GestionUsuariosGui(gestorClientes, gestorAdministradores, gestorVendedores);
+            }
+        });
+
 
     }
 
@@ -269,7 +276,7 @@ public class GestorSupermercado {
         eliminarButton.setEnabled(false);
         generarFacturaButton.setEnabled(false);
         //ingresarButton1.setEnabled(false);
-        ingresarButton3.setEnabled(false);
+        //ingresarButton3.setEnabled(false);
     }
     private void levantarJson(){
         this.gestorVendedores.levantarArchivoJsonUsuarios("usuarios.json");
