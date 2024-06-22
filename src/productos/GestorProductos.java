@@ -18,11 +18,22 @@ public class GestorProductos {
         this.objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
-
+/*
     public Producto crearProducto (String idProducto, String nombre, String marca, TipoProducto tipoProducto, Float precio, String descripcion, String fechaDeVencimiento, int stock) {
         return new Producto(crearId(tipoProducto), nombre, marca, tipoProducto, precio, descripcion, fechaDeVencimiento, stock);
     }
     public Producto crearProductoPorPeso (String idProducto, String nombre, String marca, TipoProducto tipoProducto, float precio, String descripcion, String fechaDeVencimiento, int stock,
+                                          float peso, float precioPorPeso){
+        return new ProductoPorPeso(crearId(tipoProducto), nombre, marca, tipoProducto, precio, descripcion, fechaDeVencimiento, stock, peso, precioPorPeso);
+
+    }
+
+
+ */
+    public Producto crearProducto (String nombre, String marca, TipoProducto tipoProducto, Float precio, String descripcion, String fechaDeVencimiento, int stock) {
+        return new Producto(crearId(tipoProducto), nombre, marca, tipoProducto, precio, descripcion, fechaDeVencimiento, stock);
+    }
+    public Producto crearProductoPorPeso (String nombre, String marca, TipoProducto tipoProducto, float precio, String descripcion, String fechaDeVencimiento, int stock,
                                           float peso, float precioPorPeso){
         return new ProductoPorPeso(crearId(tipoProducto), nombre, marca, tipoProducto, precio, descripcion, fechaDeVencimiento, stock, peso, precioPorPeso);
 
@@ -98,8 +109,14 @@ public class GestorProductos {
         }
         return salida;
     }
+    /*
     public void listarProductos(){//TODO: DEVOLVER UNA LISTA
         this.productos.stream().forEach(producto -> System.out.println(producto));
+    }
+
+     */
+    public List<Producto> listar(){
+        return this.productos.stream().toList();
     }
 
     public int buscarUltimoIntId (TipoProducto tipoProducto){// genera un nuevo id por tipo de producto a generar

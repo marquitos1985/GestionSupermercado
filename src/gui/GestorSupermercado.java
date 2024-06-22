@@ -43,11 +43,10 @@ public class GestorSupermercado {
     private JLabel carritoLabel;
     private JScrollPane productosScrollPane;
     private JLabel subtotalLabel;
-    private JTextField textField1;
-    private JTextField textField2;
+    private JTextField admdniTextField1;
     private JButton ingresarButton2;
     private JButton ingresarButton1;
-    private JButton ingreasrButton;
+    private JButton ingresarButton3;
     private JPanel iniciarSesionJPanel;
     private JPanel seleccionClienteJPanel;
     private JPanel ventaJPanel;
@@ -55,6 +54,8 @@ public class GestorSupermercado {
     private JList carritoJList;
     private JLabel subtotalActualizadoLabel;
     private JList cantidadJList;
+    private JPasswordField passwordField1;
+    private JLabel administradorActivoLabel;
     private GestorUsuario <Vendedor> gestorVendedores;
     private GestorUsuario <Administrador> gestorAdministradores;
     private GestorUsuario <Cliente> gestorClientes;
@@ -92,24 +93,31 @@ public class GestorSupermercado {
         this.listaProductosFiltrada = gestorProductos.buscarPorTipo((TipoProducto) tipoProductosJComboBox.getSelectedItem());
 
         DefaultListModel modelProductos = new DefaultListModel<>();
+        //dniClienteTextField.setEditable(false);
 
 
+
+        //////////////////////////////////////////    SOLAPA VENDEDOR     //////////////////////////////////////////
         ingresarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Vendedor vendedor = gestorVendedores.buscarUsuarioPorDni(Integer.valueOf(usuarioTextField.getText()));
-                if(vendedor != null){
-                    if(vendedor.getContraseña().equals(new String(passwordField.getPassword()))){
-                        JOptionPane.showMessageDialog(null, "Ingreso exitoso....");
-                        vendedorActivoLabel.setText(("DNI: " + vendedor.getDni() + " - " + vendedor.getNombreCompleto()).toUpperCase());
-                        caja.setVendedor(vendedor);
-                        buscarButton.setEnabled(true);
+
+                if(!(usuarioTextField.getText().isBlank() && usuarioTextField.getText().isEmpty())){
+                    Vendedor vendedor = gestorVendedores.buscarUsuarioPorDni(Integer.valueOf(usuarioTextField.getText()));
+                    if(vendedor != null){
+                        if(vendedor.getContraseña().equals(new String(passwordField.getPassword()))){
+                            JOptionPane.showMessageDialog(null, "Ingreso exitoso....");
+                            vendedorActivoLabel.setText(("DNI: " + vendedor.getDni() + " - " + vendedor.getNombreCompleto()).toUpperCase());
+                            caja.setVendedor(vendedor);
+                            buscarButton.setEnabled(true);
+                        }else {
+                            JOptionPane.showMessageDialog(null, "Contraseña inválida...");
+                        }
                     }else {
-                        JOptionPane.showMessageDialog(null, "Contraseña inválida...");
+                        JOptionPane.showMessageDialog(null, "Vendedor inexistente...");
                     }
-                }else {
-                    JOptionPane.showMessageDialog(null, "El usuario no es vendedor o no existe...");
                 }
+
             }
         });
 
@@ -213,14 +221,54 @@ public class GestorSupermercado {
         });
 
 
+    //////////////////////////////////////////    SOLAPA ADMINISTRADOR     //////////////////////////////////////////
+
+        ingresarButton2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                if(!(admdniTextField1.getText().isBlank() && admdniTextField1.getText().isEmpty())){
+                    Administrador administrador = gestorAdministradores.buscarUsuarioPorDni(Integer.valueOf(admdniTextField1.getText()));
+                    if(administrador != null){
+                        if(administrador.getContraseña().equals(new String(passwordField1.getPassword()))){
+                            JOptionPane.showMessageDialog(null, "Ingreso exitoso....");
+                            administradorActivoLabel.setText(("DNI: " + administrador.getDni() + " - " + administrador.getNombreCompleto()).toUpperCase());
+                            ingresarButton1.setEnabled(true);
+                            ingresarButton3.setEnabled(true);
+                        }else {
+                            JOptionPane.showMessageDialog(null, "Contraseña inválida...");
+                        }
+                    }else {
+                        JOptionPane.showMessageDialog(null, "El administrador no existe...");
+                    }
+                }
+
+            }
+        });
+
+
+
+
+        ingresarButton1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                GestionProductosGui gestionProductosGui = new GestionProductosGui(gestorProductos);
+
+            }
+        });
+
+
     }
 
 
     private void inhabilitarBotones(){
         buscarButton.setEnabled(false);
-        //agregarButton.setEnabled(false);
-        //eliminarButton.setEnabled(false);
-        //generarFacturaButton.setEnabled(false);
+        agregarButton.setEnabled(false);
+        eliminarButton.setEnabled(false);
+        generarFacturaButton.setEnabled(false);
+        //ingresarButton1.setEnabled(false);
+        ingresarButton3.setEnabled(false);
     }
     private void levantarJson(){
         this.gestorVendedores.levantarArchivoJsonUsuarios("usuarios.json");
