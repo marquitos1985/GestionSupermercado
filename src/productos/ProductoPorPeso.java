@@ -1,6 +1,6 @@
 package productos;
 
-public class ProductoPorPeso extends Producto {//// puede que hay a q implementar una interfaz pesable. Para modificar el precio, porque hay 2, el de precio por peso y el de precio (ver contructor)
+public class ProductoPorPeso extends Producto{//// puede que hay a q implementar una interfaz pesable. Para modificar el precio, porque hay 2, el de precio por peso y el de precio (ver contructor)
     private float peso;
     private float precioPorPeso;
 
@@ -30,6 +30,11 @@ public class ProductoPorPeso extends Producto {//// puede que hay a q implementa
 
     public void setPrecioPorPeso(float precioPorPeso) {
         this.precioPorPeso = precioPorPeso;
+    }
+
+    @Override
+    public String toString() {
+        return String.format(super.toString() + " - Peso: %s - Precio por peso: %s", this.peso, this.precioPorPeso);
     }
 
 }

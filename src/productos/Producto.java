@@ -123,14 +123,11 @@ public class Producto implements Comparable<Producto> {
 
     @Override
     public String toString() {
-        return "Producto{" +
-                "idProducto='" + idProducto + '\'' +
-                ", nombre='" + nombre + '\'' +
-                ", marca='" + marca + '\'' +
-                ", tipoProducto=" + tipoProducto +
-                ", precio=" + precio +
-                ", descripcion='" + descripcion + '\'' +
-                ", fechaDeVencimiento='" + fechaDeVencimiento + '\'' +
-                '}';
+        return String.format("ID: %s - %s - %s - %s - Descripcion: %s - Venc: %s - Stock: %s", this.idProducto, this.nombre, this.marca, this.tipoProducto, this.descripcion, this.fechaDeVencimiento, this.stock);
+
+    }
+    public String toStringResumido() {
+        return String.format("ID: %s - %s - %s - Descripcion: %s - Stock: %s", this.idProducto, this.nombre, this.marca, this.descripcion, this.stock);
+
     }
 }

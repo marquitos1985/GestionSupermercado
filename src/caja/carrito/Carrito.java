@@ -23,6 +23,10 @@ public class Carrito {
 
     }
 
+    public LinkedHashMap<Producto, Integer> getProductos() {
+        return productos;
+    }
+
     public void restar(Producto producto){
         int cantidad = 0;
         if(this.productos.containsKey(producto)){
@@ -58,4 +62,12 @@ public class Carrito {
         return suma;
     }
 
+    public float getSubtotalCarrito(){
+        float subtotal = 0;
+        for (Producto producto : this.productos.keySet()){
+            subtotal = subtotal + (producto.getPrecio()*this.productos.get(producto));
+        }
+
+        return subtotal;
+    }
 }

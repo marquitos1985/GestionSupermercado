@@ -1,5 +1,4 @@
 package productos;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -99,7 +98,7 @@ public class GestorProductos {
         }
         return salida;
     }
-    public void listarProductos(){
+    public void listarProductos(){//TODO: DEVOLVER UNA LISTA
         this.productos.stream().forEach(producto -> System.out.println(producto));
     }
 
@@ -168,8 +167,8 @@ public class GestorProductos {
             if (cantidad >= 0){
                 producto.setStock(producto.getStock() + cantidad);
             }else{
-                if(producto.getStock() >= cantidad){
-                    producto.setStock(producto.getStock() - cantidad);
+                if(producto.getStock() >= (- cantidad)){
+                    producto.setStock(producto.getStock() + cantidad);// se suma porque la cantidad es negativa
 
                 } else {
                     throw new StockException("Stock existente menor a stock a eliminar.");

@@ -3,6 +3,7 @@ package gui;
 import caja.Caja;
 import productos.GestorProductos;
 import productos.Producto;
+import productos.StockException;
 import productos.TipoProducto;
 import usuarios.GestorUsuario;
 import usuarios.clientes.Cliente;
@@ -27,7 +28,7 @@ public class GestorSupermercado {
     private JButton agregarButton;
     private JButton eliminarButton;
     private JButton generarFacturaButton;
-    private JComboBox productosJComboBox;
+    private JComboBox tipoProductosJComboBox;
     private JLabel iniciarSesionLabel;
     private JLabel usuarioLabel;
     private JLabel contraseniaLabel;
@@ -52,10 +53,13 @@ public class GestorSupermercado {
     private JPanel ventaJPanel;
     private JList productosJList;
     private JList carritoJList;
+    private JLabel subtotalActualizadoLabel;
+    private JList cantidadJList;
     private GestorUsuario <Vendedor> gestorVendedores;
     private GestorUsuario <Administrador> gestorAdministradores;
     private GestorUsuario <Cliente> gestorClientes;
     private GestorProductos gestorProductos;
+    private List <Producto> listaProductosFiltrada;
 
 
     public GestorSupermercado() {
@@ -69,19 +73,25 @@ public class GestorSupermercado {
         this.gestorAdministradores = new GestorUsuario<>();
         this.gestorClientes = new GestorUsuario<>();
         this.gestorProductos = new GestorProductos();
+        levantarJson();
+
 
 
     }
 
     public void iniciarSistema(){
         Caja caja = new Caja();
-        levantarJson();
+        caja.setGestorProductos(this.gestorProductos);
+
         inhabilitarBotones();
 
         for (TipoProducto tipo: TipoProducto.values()){
-            productosJComboBox.addItem(tipo);
-
+            tipoProductosJComboBox.addItem(tipo);
         }
+
+        this.listaProductosFiltrada = gestorProductos.buscarPorTipo((TipoProducto) tipoProductosJComboBox.getSelectedItem());
+
+        DefaultListModel modelProductos = new DefaultListModel<>();
 
 
         ingresarButton.addActionListener(new ActionListener() {
@@ -115,6 +125,7 @@ public class GestorSupermercado {
                     caja.setCliente(cliente);
                     agregarButton.setEnabled(true);
                     eliminarButton.setEnabled(true);
+                    generarFacturaButton.setEnabled(true);
                 }else {
                     JOptionPane.showMessageDialog(null, "Cliente inexistente...");
                 }
@@ -124,39 +135,92 @@ public class GestorSupermercado {
         });
 
 
-        productosJComboBox.addActionListener(new ActionListener() {
+        tipoProductosJComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                TipoProducto tipoProductoSeleccionado = (TipoProducto)  productosJComboBox.getSelectedItem();
-                List <Producto> lista = gestorProductos.buscarPorTipo(tipoProductoSeleccionado);
-                DefaultListModel<String> model = new DefaultListModel<>();
-                for (Producto producto: lista) {
-                    model.addElement( "id: "+ producto.getIdProducto() + producto.getNombre() + "- $" + producto.getPrecio() + "Stock: " + producto.getStock() );
+                TipoProducto tipoProductoSeleccionado = (TipoProducto) tipoProductosJComboBox.getSelectedItem();
+
+                listaProductosFiltrada = gestorProductos.buscarPorTipo(tipoProductoSeleccionado);
+                for (Producto prod: listaProductosFiltrada) {
+                    //productosJComboBox.addItem(prod);
+                    modelProductos.addElement(prod);
                 }
-                productosJList.setModel(model);
+
+                productosJList = actualizarJList(productosJList, listaProductosFiltrada);
+
+
             }
         });
+
+
 
         agregarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Producto prod = (Producto) productosJList.getSelectedValue();
+                if(prod != null){
+                    try {
+                        caja.agregarProducto(prod);
+                        //carritoJList = actualizarJList(carritoJList, caja.getCarrito().getProductos().entrySet().stream().toList());
+                        carritoJList = actualizarJList(carritoJList, caja.getCarrito().getProductos().keySet().stream().toList());
+                        cantidadJList = actualizarJList(cantidadJList, caja.getCarrito().getProductos().values().stream().toList());
 
-                DefaultListModel<String> model = new DefaultListModel<>();
-                model.addElement(productosJList.getSelectedValue().toString());
-                carritoJList.setModel(model);
-                String id = productosJList.getSelectedValue().toString();
+                        TipoProducto tipoProductoSeleccionado = (TipoProducto) tipoProductosJComboBox.getSelectedItem();
+                        listaProductosFiltrada = gestorProductos.buscarPorTipo(tipoProductoSeleccionado);
+                        productosJList = actualizarJList(productosJList, listaProductosFiltrada);
+                        subtotalActualizadoLabel.setText(String.valueOf(caja.getSubtotal()));
+                    } catch (StockException ex) {
+                        JOptionPane.showMessageDialog(null, ex.getMessage());
+                    }
+                }else {
+                    JOptionPane.showMessageDialog(null, "No seleccinó producto para a agregar al carrito...");
+                }
+
 
             }
         });
+
+
+        eliminarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Producto prod = (Producto) carritoJList.getSelectedValue();
+                if(prod != null){
+                    try {
+                        caja.eliminarProducto(prod);
+                        carritoJList = actualizarJList(carritoJList, caja.getCarrito().getProductos().keySet().stream().toList());
+                        cantidadJList = actualizarJList(cantidadJList, caja.getCarrito().getProductos().values().stream().toList());
+                        TipoProducto tipoProductoSeleccionado = (TipoProducto) tipoProductosJComboBox.getSelectedItem();
+                        listaProductosFiltrada = gestorProductos.buscarPorTipo(tipoProductoSeleccionado);
+                        productosJList = actualizarJList(productosJList, listaProductosFiltrada);
+                        subtotalActualizadoLabel.setText(String.valueOf(caja.getSubtotal()));
+
+                    } catch (StockException ex) {
+                        JOptionPane.showMessageDialog(null, ex.getMessage());
+                    }
+                }else {
+                    JOptionPane.showMessageDialog(null, "No seleccinó producto para eliminar del carrito...");
+                }
+
+
+            }
+        });
+        generarFacturaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //TODO hacerrr
+            }
+        });
+
 
     }
 
 
     private void inhabilitarBotones(){
         buscarButton.setEnabled(false);
-        agregarButton.setEnabled(false);
-        eliminarButton.setEnabled(false);
-        generarFacturaButton.setEnabled(false);
+        //agregarButton.setEnabled(false);
+        //eliminarButton.setEnabled(false);
+        //generarFacturaButton.setEnabled(false);
     }
     private void levantarJson(){
         this.gestorVendedores.levantarArchivoJsonUsuarios("usuarios.json");
@@ -165,6 +229,15 @@ public class GestorSupermercado {
         this.gestorProductos.levantarArchivoJsonProductos("productos.json");
     }
 
+    public <T> JList actualizarJList(JList jList, List<T> lista){
+        DefaultListModel<T> model = new DefaultListModel<>();
+        for (T elemento: lista) {
+            model.addElement(elemento);
+        }
+        jList.setModel(model);
+
+        return  jList;
+    }
 
     public static void main(String[] args) {
         GestorSupermercado gestor = new GestorSupermercado();
