@@ -1,6 +1,4 @@
 package gui;
-
-
 import caja.Caja;
 import productos.GestorProductos;
 import productos.Producto;
@@ -17,6 +15,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+
 
 public class GestorSupermercado {
     private JTabbedPane principalTabbedPane;
@@ -106,7 +105,6 @@ public class GestorSupermercado {
 
                 if(!(usuarioTextField.getText().isBlank() && usuarioTextField.getText().isEmpty())){
                     Vendedor vendedor = gestorVendedores.buscarUsuarioPorDni(Integer.valueOf(usuarioTextField.getText()));
-                    System.out.println(vendedor);
                     if(vendedor != null){
                         if(vendedor.getContraseña().equals(new String(passwordField.getPassword()))){
                             JOptionPane.showMessageDialog(null, "Ingreso exitoso....");
