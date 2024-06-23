@@ -67,7 +67,6 @@ public class Carrito {
         for (Producto producto : this.productos.keySet()){
             subtotal = subtotal + (producto.getPrecio()*this.productos.get(producto));
         }
-
         return subtotal;
     }
 }

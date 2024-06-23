@@ -1,5 +1,6 @@
 package gui;
 
+
 import caja.Caja;
 import productos.GestorProductos;
 import productos.Producto;
@@ -14,6 +15,8 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import javax.swing.JButton;
+import javax.swing.JFrame;
 
 public class GestorSupermercado {
     private JTabbedPane principalTabbedPane;
@@ -137,8 +140,6 @@ public class GestorSupermercado {
                 }else {
                     JOptionPane.showMessageDialog(null, "Cliente inexistente...");
                 }
-
-
             }
         });
 
@@ -208,17 +209,13 @@ public class GestorSupermercado {
                     JOptionPane.showMessageDialog(null, "No seleccinó producto para eliminar del carrito...");
                 }
 
-
             }
         });
         generarFacturaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO hacerrr
-            }
-        });
-
-
+            caja.finalizarCompra();
+        }});
     //////////////////////////////////////////    SOLAPA ADMINISTRADOR     //////////////////////////////////////////
 
         ingresarButton2.addActionListener(new ActionListener() {
