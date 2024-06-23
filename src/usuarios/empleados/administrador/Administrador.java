@@ -13,7 +13,7 @@ public class Administrador extends Empleado implements Comparable<Administrador>
         super(nombreCompleto, dni, direccion, telefono, activo, email, contraseña, sueldo);
     }
 
-
+/*
     public String toString() {
         return String.format(
                 "=====================\n" +
@@ -25,12 +25,26 @@ public class Administrador extends Empleado implements Comparable<Administrador>
                 );
     }
 
+
+ */
+    public String toString() {
+        return String.format("Administrador: " + super.toString());
+    }
+/*
     @Override
     public int compareTo(Administrador otroAdministrador) {
         if (otroAdministrador == null ) {
             throw new NullPointerException("El administrador a comparar no puede ser nulo");
         }
            return this.getDni().compareTo(otroAdministrador.getDni());
+    }
+
+
+ */
+
+    @Override
+    public int compareTo(Administrador o) {
+        return this.getDni().compareTo(o.getDni());
     }
 }
 

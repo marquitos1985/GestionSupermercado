@@ -3,6 +3,7 @@ package gui;
 import usuarios.GestorUsuario;
 import usuarios.Usuario;
 import usuarios.clientes.Cliente;
+import usuarios.empleados.Empleado;
 import usuarios.empleados.administrador.Administrador;
 import usuarios.empleados.vendedor.Turno;
 import usuarios.empleados.vendedor.Vendedor;
@@ -48,17 +49,18 @@ public class GestionUsuariosGui {
     private JTextField ingresoDniTextField1;
     private JButton buscarButton;
     private JLabel usuarioModificarJLabel;
-    private JTabbedPane tabbedPane2;
     private JTextField buscarDniTextField1;
     private JButton buscarButton1;
     private JButton eliminarButton;
     private JLabel usuarioAeliminarJLabel;
+    private JCheckBox activarCheckBox;
     private final String archivoUsuarios;
 
     private GestorUsuario<Cliente> gestorClientes;
     private GestorUsuario<Administrador> gestorAdministradores;
     private GestorUsuario<Vendedor> gestorVendedores;
     private Usuario usuarioEncontrado;
+    private Usuario usuarioEliminar;
 
     public GestionUsuariosGui(GestorUsuario<Cliente> gestorClientes, GestorUsuario<Administrador> gestorAdministradores, GestorUsuario<Vendedor> gestorVendedores, String archivoUsuarios) {
         this.gestorClientes = gestorClientes;
@@ -66,6 +68,7 @@ public class GestionUsuariosGui {
         this.gestorVendedores = gestorVendedores;
         this.archivoUsuarios = archivoUsuarios;
         this.usuarioEncontrado = null;
+        this.usuarioEliminar = null;
 
         JFrame frame = new JFrame("Gestor COTO");
         frame.setContentPane(this.gestionUsuariosJPanel);
@@ -84,7 +87,9 @@ public class GestionUsuariosGui {
             turnoComboBox1.addItem(turno);
             turnoComboBox11.addItem(turno);
         }
+
         turnoComboBox1.setSelectedItem(Turno.MAÑANA);
+        clienteCheckBox.setSelected(true);
 
         usuariosPorTipoComboBox1.addItem("Cliente");
         usuariosPorTipoComboBox1.addItem("Vendedor");
@@ -130,6 +135,10 @@ public class GestionUsuariosGui {
                 Vendedor vendedor = null;
                 Administrador administrador = null;
 
+
+
+                //TODO  VERIFICAR QUE QUEDE GUARDADO EN EL JASON Y COMPROBAR
+
                 if(clienteCheckBox.isSelected()){
                     if(verificarCamposUsuario()){
                         cliente = new Cliente(nombreCompletoTextField2.getText(), Integer.valueOf(dniTextField1.getText()), direccionTextField3.getText(),
@@ -139,7 +148,12 @@ public class GestionUsuariosGui {
                         }else {
                             cliente.setSocio(false);
                         }
-                        gestorClientes.crearUsuario(cliente);
+                        if(gestorClientes.crearUsuario(cliente)){
+                            gestorClientes.guardarArchivoJsonUsuarios(archivoUsuarios);
+                            JOptionPane.showMessageDialog(null, "Cliente creado exitosamente...");
+                        }else {
+                            JOptionPane.showMessageDialog(null, "Usuario ya existente...");
+                        }
                     }else {
                         JOptionPane.showMessageDialog(null, "Debe completar todos los campos correspondientes...");
                     }
@@ -149,7 +163,15 @@ public class GestionUsuariosGui {
                         vendedor = new Vendedor(nombreCompletoTextField2.getText(), Integer.valueOf(dniTextField1.getText()), direccionTextField3.getText(),
                                 telefonoTextField4.getText(), true, emailTextField5.getText(), contraseñaTextField6.getText(),
                                 Float.valueOf(sueldoTextField7.getText()), (Turno) turnoComboBox1.getSelectedItem());
-                        gestorVendedores.agregarUsuario(vendedor);
+
+
+                        if(gestorVendedores.crearUsuario(vendedor)){
+                            gestorVendedores.guardarArchivoJsonUsuarios(archivoUsuarios);
+                            JOptionPane.showMessageDialog(null, "Vendedor creado exitosamente...");
+
+                        }else {
+                            JOptionPane.showMessageDialog(null, "Usuario ya existente...");
+                        }
 
                     }else {
                         JOptionPane.showMessageDialog(null, "Debe completar todos los campos correspondientes...");
@@ -161,13 +183,21 @@ public class GestionUsuariosGui {
                                                                 telefonoTextField4.getText(), true, emailTextField5.getText(), contraseñaTextField6.getText(),
                                                                 Float.valueOf(sueldoTextField7.getText()));
 
-                        gestorAdministradores.agregarUsuario(administrador);
+
+                        if(gestorAdministradores.crearUsuario(administrador)){
+                            gestorAdministradores.guardarArchivoJsonUsuarios(archivoUsuarios);
+                            JOptionPane.showMessageDialog(null, "Administrador creado exitosamente...");
+
+                        }else {
+                            JOptionPane.showMessageDialog(null, "Usuario ya existente...");
+                        }
+
                     }else {
                         JOptionPane.showMessageDialog(null, "Debe completar todos los campos correspondientes...");
                     }
 
                 }
-
+/*
                 if(cliente != null){
                     gestorClientes.guardarArchivoJsonUsuarios(archivoUsuarios);
                     JOptionPane.showMessageDialog(null, "Cliente creado exitosamente...");
@@ -181,6 +211,8 @@ public class GestionUsuariosGui {
                     JOptionPane.showMessageDialog(null, "Administrador creado exitosamente...");
                 }
 
+
+ */
             }
         });
 
@@ -199,7 +231,6 @@ public class GestionUsuariosGui {
                 if(!(ingresoDniTextField1.getText().isBlank() && ingresoDniTextField1.getText().isEmpty())){
 
                     usuarioEncontrado = gestorClientes.buscarUsuarioPorDni(Integer.valueOf(ingresoDniTextField1.getText()));
-
                     if(usuarioEncontrado == null){
                         usuarioEncontrado = gestorVendedores.buscarUsuarioPorDni(Integer.valueOf(ingresoDniTextField1.getText()));
                         if(usuarioEncontrado == null){
@@ -221,17 +252,29 @@ public class GestionUsuariosGui {
                             habilitarCamposAdministradorModificar();
                         }
 
+                        setCamposModificarComunes();
+
+                        if(usuarioEncontrado instanceof Cliente){
+                            if(((Cliente) usuarioEncontrado).getSocio()){
+                                socioCheckBox1.setSelected(true);
+                            }else {
+                                socioCheckBox1.setSelected(false);
+                            }
+                        }else if(usuarioEncontrado instanceof Empleado){
+                            contraseniaTextField66.setText(((Empleado) usuarioEncontrado).getContraseña());
+                            sueldoTextField77.setText(String.valueOf(((Empleado) usuarioEncontrado).getSueldo()));
+                            if(usuarioEncontrado instanceof Vendedor){
+                                turnoComboBox11.setSelectedItem((((Vendedor) usuarioEncontrado).getTurnoLaboral()));
+                            }
+                        }
+
                         modificarButton.setEnabled(true);
 
                     }else {
                         JOptionPane.showMessageDialog(null, "Usuario inexistente...");
                     }
 
-
-
                 }
-
-
             }
         });
 
@@ -239,7 +282,6 @@ public class GestionUsuariosGui {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(clienteCheckBox.isSelected()){
-
                     habilitarCamposClienteModificar();
                 }
 
@@ -250,7 +292,6 @@ public class GestionUsuariosGui {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(administradorCheckBox.isSelected()) {
-
                     habilitarCamposAdministradorModificar();
                 }
             }
@@ -260,11 +301,132 @@ public class GestionUsuariosGui {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(vendedorCheckBox.isSelected()) {
-
                     habilitarCamposVendedorModificar();
                 }
             }
         });
+
+
+        modificarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (usuarioEncontrado instanceof Empleado){
+                    if(verificarCamposEmpleadoModificar()){
+                        //TODO VERIFICAR EL SUELDO SEA MAYOR A CERO
+                        usuarioEncontrado.setNombreCompleto(nombreCompletoTextField22.getText());
+                        usuarioEncontrado.setDireccion(direccionTextField33.getText());
+                        usuarioEncontrado.setTelefono(telefonoTextField44.getText());
+                        usuarioEncontrado.setEmail(emailTextField55.getText());
+
+                        ((Empleado) usuarioEncontrado).setContraseña(contraseniaTextField66.getText());
+                        ((Empleado) usuarioEncontrado).setSueldo(Float.valueOf(sueldoTextField77.getText()));
+
+
+                        if(activarCheckBox.isSelected()){
+                            usuarioEncontrado.setActivo(true);
+                        }else {
+                            usuarioEncontrado.setActivo(false);
+                        }
+
+                        if(usuarioEncontrado instanceof Vendedor){
+                            ((Vendedor) usuarioEncontrado).setTurnoLaboral((Turno) turnoComboBox11.getSelectedItem());
+                            gestorVendedores.guardarArchivoJsonUsuarios(archivoUsuarios);
+                        }else {
+                            gestorAdministradores.guardarArchivoJsonUsuarios(archivoUsuarios);
+                        }
+
+                        JOptionPane.showMessageDialog(null, "Usuario modificado con exito....");
+                    }else {
+
+                        JOptionPane.showMessageDialog(null, "Debe completar todos los campos...");
+                    }
+
+                }else {
+                    if(verificarCamposUsuarioModificar()){
+                        usuarioEncontrado.setNombreCompleto(nombreCompletoTextField22.getText());
+                        usuarioEncontrado.setDireccion(direccionTextField33.getText());
+                        usuarioEncontrado.setTelefono(telefonoTextField44.getText());
+                        usuarioEncontrado.setEmail(emailTextField55.getText());
+
+                        if(socioCheckBox1.isSelected()){
+                            ((Cliente) usuarioEncontrado).setSocio(true);
+                        }else {
+                            ((Cliente) usuarioEncontrado).setSocio(false);
+                        }
+
+                        if(activarCheckBox.isSelected()){
+                            usuarioEncontrado.setActivo(true);
+                        }else {
+                            usuarioEncontrado.setActivo(false);
+                        }
+
+                        gestorClientes.guardarArchivoJsonUsuarios(archivoUsuarios);
+                        JOptionPane.showMessageDialog(null, "Usuario modificado con exito....");
+                    }else {
+                        JOptionPane.showMessageDialog(null, "Debe completar todos los campos...");
+                    }
+                }
+
+
+            }
+        });
+
+
+
+    ////////////////////////////////////     SOLAPA ELIMINAR     ////////////////////////////////////////////////
+
+
+        buscarButton1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(!(buscarDniTextField1.getText().isEmpty() && buscarDniTextField1.getText().isBlank())){
+
+                    usuarioEliminar = gestorClientes.buscarUsuarioPorDni(Integer.valueOf(buscarDniTextField1.getText()));
+
+                    if(usuarioEliminar == null){
+                        usuarioEliminar = gestorVendedores.buscarUsuarioPorDni(Integer.valueOf(buscarDniTextField1.getText()));
+                        if(usuarioEliminar == null){
+                            usuarioEliminar = gestorAdministradores.buscarUsuarioPorDni(Integer.valueOf(buscarDniTextField1.getText()));
+                        }
+                    }
+
+                    if (usuarioEliminar != null){
+                        JOptionPane.showMessageDialog(null, "Usuario encontrado...");
+                        usuarioAeliminarJLabel.setText(usuarioEliminar.toString());
+                        eliminarButton.setEnabled(true);
+
+                    }else {
+                        JOptionPane.showMessageDialog(null, "Usuario inexistente...");
+                    }
+
+
+
+                }
+            }
+        });
+
+        eliminarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(usuarioEliminar != null){
+                    JOptionPane.showMessageDialog(null, "Se eliminará el usuario " + usuarioEliminar);
+                    if(usuarioEliminar instanceof Cliente){
+                        gestorClientes.eliminar((Cliente) usuarioEliminar);
+                        gestorClientes.guardarArchivoJsonUsuarios(archivoUsuarios);
+                    }else if (usuarioEliminar instanceof Vendedor){
+                        gestorVendedores.eliminar((Vendedor) usuarioEliminar);
+                        gestorVendedores.guardarArchivoJsonUsuarios(archivoUsuarios);
+                    }else {
+                        gestorAdministradores.eliminar((Administrador) usuarioEliminar);
+                        gestorAdministradores.guardarArchivoJsonUsuarios(archivoUsuarios);
+                    }
+
+                }
+
+            }
+        });
+
+
 
 
 
@@ -329,8 +491,11 @@ public class GestionUsuariosGui {
         contraseniaTextField66.setEnabled(false);
         sueldoTextField77.setEnabled(false);
         turnoComboBox11.setEnabled(false);
+        activarCheckBox.setEnabled(false);
         modificarButton.setEnabled(false);
 
+        //SOLAPA ELIMINAR
+        eliminarButton.setEnabled(false);
 
     }
     private void habilitarCamposCliente(){
@@ -370,6 +535,7 @@ public class GestionUsuariosGui {
         direccionTextField33.setEnabled(true);
         telefonoTextField44.setEnabled(true);
         emailTextField55.setEnabled(true);
+        activarCheckBox.setEnabled(true);
     }
     private void habilitarCamposClienteModificar(){
         clienteCheckBox1.setSelected(true);
@@ -402,6 +568,20 @@ public class GestionUsuariosGui {
         socioCheckBox1.setEnabled(false);
         turnoComboBox11.setEnabled(false);
     }
+
+    private void setCamposModificarComunes(){
+        nombreCompletoTextField22.setText(usuarioEncontrado.getNombreCompleto());
+        direccionTextField33.setText(usuarioEncontrado.getDireccion());
+        telefonoTextField44.setText(usuarioEncontrado.getTelefono());
+        emailTextField55.setText(usuarioEncontrado.getEmail());
+        if(usuarioEncontrado.getActivo()){
+            activarCheckBox.setSelected(true);
+        }else {
+            activarCheckBox.setSelected(false);
+        }
+    }
+
+
     private boolean verificarCamposUsuario(){
         boolean salida = false;
         if (!(dniTextField1.getText().isEmpty() && dniTextField1.getText().isBlank()) &&
@@ -429,6 +609,32 @@ public class GestionUsuariosGui {
         return salida;
     }
 
+    private boolean verificarCamposUsuarioModificar(){
+        boolean salida = false;
+        if (!(nombreCompletoTextField22.getText().isEmpty() && nombreCompletoTextField22.getText().isBlank()) &&
+                !(direccionTextField33.getText().isEmpty() && direccionTextField33.getText().isBlank()) &&
+                !(telefonoTextField44.getText().isEmpty() && telefonoTextField44.getText().isBlank()) &&
+                !(emailTextField55.getText().isEmpty() && emailTextField55.getText().isBlank())){
+            salida = true;
+
+        }
+
+        return salida;
+    }
+
+    public boolean verificarCamposEmpleadoModificar(){
+
+        boolean salida = false;
+        if (verificarCamposUsuario() &&
+                !(contraseniaTextField66.getText().isEmpty() && contraseniaTextField66.getText().isBlank()) &&
+                !(sueldoTextField77.getText().isEmpty() && sueldoTextField77.getText().isBlank())){
+                salida = true;
+
+        }
+
+        return salida;
+    }
+
     public <T> JList actualizarJList(JList jList, List<T> lista){
         DefaultListModel<T> model = new DefaultListModel<>();
         for (T elemento: lista) {
@@ -438,5 +644,8 @@ public class GestionUsuariosGui {
 
         return  jList;
     }
+
+
+
 
 }
