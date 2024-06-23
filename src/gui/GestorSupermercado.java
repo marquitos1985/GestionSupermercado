@@ -56,6 +56,8 @@ public class GestorSupermercado {
     private JList cantidadJList;
     private JPasswordField passwordField1;
     private JLabel administradorActivoLabel;
+    private final String  archivoUsuarios = "usuarios.json";
+    private final String  archivoProductos = "productos.json";
     private GestorUsuario <Vendedor> gestorVendedores;
     private GestorUsuario <Administrador> gestorAdministradores;
     private GestorUsuario <Cliente> gestorClientes;
@@ -93,9 +95,6 @@ public class GestorSupermercado {
         this.listaProductosFiltrada = gestorProductos.buscarPorTipo((TipoProducto) tipoProductosJComboBox.getSelectedItem());
 
         DefaultListModel modelProductos = new DefaultListModel<>();
-        //dniClienteTextField.setEditable(false);
-
-
 
         //////////////////////////////////////////    SOLAPA VENDEDOR     //////////////////////////////////////////
         ingresarButton.addActionListener(new ActionListener() {
@@ -151,12 +150,10 @@ public class GestorSupermercado {
 
                 listaProductosFiltrada = gestorProductos.buscarPorTipo(tipoProductoSeleccionado);
                 for (Producto prod: listaProductosFiltrada) {
-                    //productosJComboBox.addItem(prod);
                     modelProductos.addElement(prod);
                 }
 
                 productosJList = actualizarJList(productosJList, listaProductosFiltrada);
-
 
             }
         });
@@ -254,7 +251,7 @@ public class GestorSupermercado {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                GestionProductosGui gestionProductosGui = new GestionProductosGui(gestorProductos);
+                GestionProductosGui gestionProductosGui = new GestionProductosGui(gestorProductos, archivoProductos);
 
             }
         });
@@ -262,7 +259,7 @@ public class GestorSupermercado {
         ingresarButton3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                GestionUsuariosGui gestionUsuariosGui = new GestionUsuariosGui(gestorClientes, gestorAdministradores, gestorVendedores);
+                GestionUsuariosGui gestionUsuariosGui = new GestionUsuariosGui(gestorClientes, gestorAdministradores, gestorVendedores, archivoUsuarios);
             }
         });
 
@@ -279,10 +276,10 @@ public class GestorSupermercado {
         //ingresarButton3.setEnabled(false);
     }
     private void levantarJson(){
-        this.gestorVendedores.levantarArchivoJsonUsuarios("usuarios.json");
-        this.gestorAdministradores.levantarArchivoJsonUsuarios("usuarios.json");
-        this.gestorClientes.levantarArchivoJsonUsuarios("usuarios.json");
-        this.gestorProductos.levantarArchivoJsonProductos("productos.json");
+        this.gestorVendedores.levantarArchivoJsonUsuarios(archivoUsuarios);
+        this.gestorAdministradores.levantarArchivoJsonUsuarios(archivoUsuarios);
+        this.gestorClientes.levantarArchivoJsonUsuarios(archivoUsuarios);
+        this.gestorProductos.levantarArchivoJsonProductos(archivoProductos);
     }
 
     public <T> JList actualizarJList(JList jList, List<T> lista){

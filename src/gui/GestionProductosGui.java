@@ -46,13 +46,15 @@ public class GestionProductosGui {
     private JList verProductosPorTipoList1;
     private JList verTodosLosProductosList1;
     private JButton verButton;
+    private final String archivoProductos;
     private GestorProductos gestorProductos;
     private Producto productoEliminar;
     private Producto productoModificar;
 
-    public GestionProductosGui(GestorProductos gestorProductos) {
+    public GestionProductosGui(GestorProductos gestorProductos, String archivoProductos) {
 
         this.gestorProductos= gestorProductos;
+        this.archivoProductos = archivoProductos;
 
 
         JFrame gestionProductosFrame = new JFrame("Gestión de productos");
@@ -91,8 +93,8 @@ public class GestionProductosGui {
                         producto = gestorProductos.crearProducto(nombreTextField2.getText(), marcaTextField3.getText(),
                                 (TipoProducto) tipoProductoComboBox1.getSelectedItem(), Float.valueOf(precioTextField5.getText()),
                                 descripcionTextField6.getText(), fechaVencTextField7.getText(), Integer.valueOf(stockTextField4.getText()));
-                        gestorProductos.agregarProducto(producto); //TODO VER QUE EL ID GENERADO NO CONTIENE LOS CEROS....
-                        //gestorProductos.listarProductos();
+                        gestorProductos.agregarProducto(producto);
+
 
                     }else {
                         producto = gestorProductos.crearProductoPorPeso(nombreTextField2.getText(), marcaTextField3.getText(),
@@ -100,7 +102,7 @@ public class GestionProductosGui {
                                 descripcionTextField6.getText(), fechaVencTextField7.getText(), Integer.valueOf(stockTextField4.getText()),
                                 Float.valueOf(pesoTextField8.getText()), Float.valueOf(precioPesoTextField9.getText()));
                         gestorProductos.agregarProducto(producto);
-                        //gestorProductos.listarProductos();
+
 
                     }
                     if(producto != null){
@@ -153,7 +155,7 @@ public class GestionProductosGui {
                                 descripcionTextField14.getText(), venciminetoTextField15.getText(), Integer.valueOf(stockTextField16.getText()));
                     }
 
-                    gestorProductos.guardarArchivoJsonProductos("productos.json");
+                    gestorProductos.guardarArchivoJsonProductos(archivoProductos);
                     JOptionPane.showMessageDialog(null, "Se modificó el producto...");
 
 
@@ -183,7 +185,7 @@ public class GestionProductosGui {
                 JOptionPane.showMessageDialog(null, "Se eliminó el producto: " + productoEliminar);
 
                 gestorProductos.eliminarProducto(productoEliminar);
-                gestorProductos.guardarArchivoJsonProductos("productos.json");
+                gestorProductos.guardarArchivoJsonProductos(archivoProductos);
             }
         });
 

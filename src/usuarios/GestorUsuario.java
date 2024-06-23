@@ -91,32 +91,32 @@ public class GestorUsuario<T extends Usuario & Comparable<T>> {
         return false;
     }
 
-//    public boolean crearUsuario(T usuarioNuevo) {
-//        if (usuarioNuevo instanceof Cliente) {
-//            for (Cliente cliente : clientes) {
-//                if (cliente.getDni().equals(usuarioNuevo.getDni())) {
-//                    return false;
-//                }
-//            }
-//            return clientes.add((Cliente) usuarioNuevo);
-//        } else if (usuarioNuevo instanceof Administrador) {
-//            for (Administrador admin : administradores) {
-//                if (admin.getDni().equals(usuarioNuevo.getDni())) {
-//                    return false;
-//                }
-//            }
-//            return administradores.add((Administrador) usuarioNuevo);
-//        } else if (usuarioNuevo instanceof Vendedor) {
-//            for (Vendedor vendedor : vendedores) {
-//                if (vendedor.getDni().equals(usuarioNuevo.getDni())) {
-//                    return false;
-//                }
-//            }
-//            return vendedores.add((Vendedor) usuarioNuevo);
-//        } else {
-//            return false;
-//        }
-//    }
+       public boolean crearUsuario(T usuarioNuevo) {
+            if (usuarioNuevo instanceof Cliente) {
+                for (Cliente cliente : clientes) {
+                    if (cliente.getDni().equals(usuarioNuevo.getDni())) {
+                        return false;
+                   }
+               }
+               return clientes.add((Cliente) usuarioNuevo);
+            } else if (usuarioNuevo instanceof Administrador) {
+               for (Administrador admin : administradores) {
+                   if (admin.getDni().equals(usuarioNuevo.getDni())) {
+                        return false;
+                   }
+                }
+               return administradores.add((Administrador) usuarioNuevo);
+            } else if (usuarioNuevo instanceof Vendedor) {
+               for (Vendedor vendedor : vendedores) {
+                    if (vendedor.getDni().equals(usuarioNuevo.getDni())) {
+                       return false;
+                    }
+                }
+                return vendedores.add((Vendedor) usuarioNuevo);
+            } else {
+                return false;
+           }
+        }
 
     public T buscarUsuarioPorDni(Integer dni) {
         for (Cliente cliente : clientes) {
@@ -241,6 +241,16 @@ public class GestorUsuario<T extends Usuario & Comparable<T>> {
         } else {
             System.out.println("Usuario con DNI " + dni + " no encontrado.");
         }
+    }
+    // TODO ver si lo siguiente se puede hacer genérico
+    public List<Cliente> listarClientes(){
+        return this.clientes;
+    }
+    public List<Vendedor> listarVendeores(){
+        return this.vendedores;
+    }
+    public List<Administrador> listarAdministradores(){
+        return this.administradores;
     }
 
 }
