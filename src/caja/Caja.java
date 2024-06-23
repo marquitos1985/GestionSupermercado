@@ -39,8 +39,9 @@ public class Caja {
         }
     }
 
-    public void finalizarCompra(Cliente cleinte, Vendedor vendedor, Carrito carrito){
-
+    public void finalizarCompra(){
+        Factura factura = new Factura(cliente,vendedor,getSubtotal(),carrito);
+        factura.generarPdfFactura();
     }
 
     public GestorProductos getGestorProductos() {

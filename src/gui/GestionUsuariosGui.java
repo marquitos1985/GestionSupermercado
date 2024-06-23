@@ -60,7 +60,7 @@ public class GestionUsuariosGui {
     private GestorUsuario<Administrador> gestorAdministradores;
     private GestorUsuario<Vendedor> gestorVendedores;
     private Usuario usuarioEncontrado;
-    private Usuario usuarioEliminar;
+    //private Usuario usuarioEliminar;
 
     public GestionUsuariosGui(GestorUsuario<Cliente> gestorClientes, GestorUsuario<Administrador> gestorAdministradores, GestorUsuario<Vendedor> gestorVendedores, String archivoUsuarios) {
         this.gestorClientes = gestorClientes;
@@ -68,7 +68,7 @@ public class GestionUsuariosGui {
         this.gestorVendedores = gestorVendedores;
         this.archivoUsuarios = archivoUsuarios;
         this.usuarioEncontrado = null;
-        this.usuarioEliminar = null;
+        //this.usuarioEliminar = null;
 
         JFrame frame = new JFrame("Gestor COTO");
         frame.setContentPane(this.gestionUsuariosJPanel);
@@ -373,60 +373,6 @@ public class GestionUsuariosGui {
 
 
 
-    ////////////////////////////////////     SOLAPA ELIMINAR     ////////////////////////////////////////////////
-
-
-        buscarButton1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(!(buscarDniTextField1.getText().isEmpty() && buscarDniTextField1.getText().isBlank())){
-
-                    usuarioEliminar = gestorClientes.buscarUsuarioPorDni(Integer.valueOf(buscarDniTextField1.getText()));
-
-                    if(usuarioEliminar == null){
-                        usuarioEliminar = gestorVendedores.buscarUsuarioPorDni(Integer.valueOf(buscarDniTextField1.getText()));
-                        if(usuarioEliminar == null){
-                            usuarioEliminar = gestorAdministradores.buscarUsuarioPorDni(Integer.valueOf(buscarDniTextField1.getText()));
-                        }
-                    }
-
-                    if (usuarioEliminar != null){
-                        JOptionPane.showMessageDialog(null, "Usuario encontrado...");
-                        usuarioAeliminarJLabel.setText(usuarioEliminar.toString());
-                        eliminarButton.setEnabled(true);
-
-                    }else {
-                        JOptionPane.showMessageDialog(null, "Usuario inexistente...");
-                    }
-
-
-
-                }
-            }
-        });
-
-        eliminarButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(usuarioEliminar != null){
-                    JOptionPane.showMessageDialog(null, "Se eliminará el usuario " + usuarioEliminar);
-                    if(usuarioEliminar instanceof Cliente){
-                        gestorClientes.eliminar((Cliente) usuarioEliminar);
-                        gestorClientes.guardarArchivoJsonUsuarios(archivoUsuarios);
-                    }else if (usuarioEliminar instanceof Vendedor){
-                        gestorVendedores.eliminar((Vendedor) usuarioEliminar);
-                        gestorVendedores.guardarArchivoJsonUsuarios(archivoUsuarios);
-                    }else {
-                        gestorAdministradores.eliminar((Administrador) usuarioEliminar);
-                        gestorAdministradores.guardarArchivoJsonUsuarios(archivoUsuarios);
-                    }
-
-                }
-
-            }
-        });
-
-
 
 
 
@@ -494,8 +440,6 @@ public class GestionUsuariosGui {
         activarCheckBox.setEnabled(false);
         modificarButton.setEnabled(false);
 
-        //SOLAPA ELIMINAR
-        eliminarButton.setEnabled(false);
 
     }
     private void habilitarCamposCliente(){
