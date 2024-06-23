@@ -10,6 +10,7 @@ import usuarios.empleados.vendedor.Vendedor;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -69,9 +70,9 @@ public class GestorUsuario<T extends Usuario & Comparable<T>> {
     }
 
     public boolean dniExiste(Integer dni) {
-        return  this.clientes.stream().anyMatch(cliente -> cliente.getDni().equals(dni)) ||
+        return  (this.clientes.stream().anyMatch(cliente -> cliente.getDni().equals(dni)) ||
                 this.vendedores.stream().anyMatch(vendedor -> vendedor.getDni().equals(dni)) ||
-                this.administradores.stream().anyMatch(administrador -> administrador.getDni().equals(dni));
+                this.administradores.stream().anyMatch(administrador -> administrador.getDni().equals(dni)));
     }
 
     public boolean modificarSueldoUsario(Integer dni, float sueldoNuevo) {
@@ -117,6 +118,58 @@ public class GestorUsuario<T extends Usuario & Comparable<T>> {
                 return false;
            }
         }
+
+
+
+/*
+public boolean crearUsuario(T usuarioNuevo) {//busca el usuario, si no existe => lo agrega y retorna true, si existe y está activo => false, si existe y está inactivo => lo reemplaza por el nuevo
+    if (usuarioNuevo instanceof Cliente) {
+        for (Cliente cliente : clientes) {
+            if (cliente.getDni().equals(usuarioNuevo.getDni())) {
+                if(cliente.getActivo()){
+                    return false;
+                }else {
+                    cliente.setActivo(true);
+                    cliente = (Cliente) usuarioNuevo;
+                    return true;
+                }
+            }
+        }
+        return clientes.add((Cliente) usuarioNuevo);
+    } else if (usuarioNuevo instanceof Administrador) {
+        for (Administrador admin : administradores) {
+            if (admin.getDni().equals(usuarioNuevo.getDni())) {
+                if(admin.getActivo()){
+                    return false;
+                }else {
+                    admin.setActivo(true);
+                    admin = (Administrador) usuarioNuevo;
+                    return true;
+                }
+            }
+        }
+        return administradores.add((Administrador) usuarioNuevo);
+    } else if (usuarioNuevo instanceof Vendedor) {
+        for (Vendedor vendedor : vendedores) {
+            if (vendedor.getDni().equals(usuarioNuevo.getDni())) {
+                if(vendedor.getActivo()){
+                    return false;
+                }else {
+                    vendedor.setActivo(true);
+                    vendedor = (Vendedor) usuarioNuevo;
+                    return true;
+                }
+            }
+        }
+        return vendedores.add((Vendedor) usuarioNuevo);
+    } else {
+        return false;
+    }
+}
+
+
+ */
+
 
     public T buscarUsuarioPorDni(Integer dni) {
         for (Cliente cliente : clientes) {
@@ -243,14 +296,43 @@ public class GestorUsuario<T extends Usuario & Comparable<T>> {
         }
     }
     // TODO ver si lo siguiente se puede hacer genérico
-    public List<Cliente> listarClientes(){
-        return this.clientes;
+    public List<Cliente> listarClientes(){//Muestra los cleintes activos
+        List<Cliente> lista = new LinkedList<>();
+        for (Cliente cliente: this.clientes){
+            if(cliente.getActivo()){
+                lista.add(cliente);
+            }
+        }
+        return lista;
     }
-    public List<Vendedor> listarVendeores(){
-        return this.vendedores;
+    public List<Vendedor> listarVendeores(){//Muestra los vendedores activos
+
+        List<Vendedor> lista = new LinkedList<>();
+        for (Vendedor vendedor: this.vendedores){
+            if(vendedor.getActivo()){
+                lista.add(vendedor);
+            }
+        }
+        return lista;
+
     }
-    public List<Administrador> listarAdministradores(){
-        return this.administradores;
+    public List<Administrador> listarAdministradores(){//Muestra los administradores activos
+        List<Administrador> lista = new LinkedList<>();
+        for (Administrador administrador: this.administradores){
+            if(administrador.getActivo()){
+                lista.add(administrador);
+            }
+        }
+        return lista;
+    }
+
+    public boolean eliminar(T usuario){
+        boolean salida = false;
+        if(dniExiste(usuario.getDni())){
+            usuario.setActivo(false);
+            salida = true;
+        }
+        return salida;
     }
 
 }

@@ -91,15 +91,15 @@ public abstract class Usuario {
         this.email = email;
     }
 
-    @Override
+        @Override
     public String toString() {
-        return String.format(
-                        "Nombre Completo: %s\n" +
-                        "DNI: %s\n" +
-                        "Dirección: %s\n" +
-                        "Teléfono: %s\n" +
-                                "Email: %s\n" +
-                        "=====================\n",
-                nombreCompleto, dni, direccion, telefono, email);
+            String activoStr;
+            if (this.activo) {
+                activoStr = "ACTIVO";
+            } else {
+                activoStr = "INACTIVO";
+            }
+        return String.format("DNI: %s - %s - Dirección: %s - Teléfono: %s - Email: %s - %s - ",
+                dni, nombreCompleto, direccion, telefono, email, activoStr);
     }
 }

@@ -22,7 +22,7 @@ public class Vendedor extends Empleado implements Comparable<Vendedor> {
     public void setTurnoLaboral(Turno turnoLaboral) {
         this.turnoLaboral = turnoLaboral;
     }
-
+/*
     @Override
     public String toString() {
         return String.format(
@@ -35,6 +35,14 @@ public class Vendedor extends Empleado implements Comparable<Vendedor> {
                 super.toString(),
                 turnoLaboral.name(), turnoLaboral.getHorario());
     }
+
+ */
+
+    @Override
+    public String toString() {
+        return String.format("Vendedor: " + super.toString() + " Turno: %s (%s)", turnoLaboral.name(), turnoLaboral.getHorario());
+    }
+
 
     @Override
     public int compareTo(Vendedor otroVendedor) {

@@ -29,7 +29,7 @@ public class Cliente extends Usuario implements Comparable<Cliente> {
         }
         return this.getDni().compareTo(otroCliente.getDni());
     }
-
+/*
     @Override
     public String toString() {
         return String.format(
@@ -46,4 +46,20 @@ public class Cliente extends Usuario implements Comparable<Cliente> {
                         "=====================\n",
                 getNombreCompleto(), getDni(), getDireccion(), getTelefono(), getActivo(), getEmail(), socio);
     }
+
+ */
+
+    @Override
+    public String toString() {
+        String socioStr;
+        if (this.socio) {
+            socioStr = "activo";
+        } else {
+            socioStr = "inactivo";
+        }
+        return String.format("Cliente: " + super.toString() + "Socio: %s",socioStr);
+    };
 }
+
+
+

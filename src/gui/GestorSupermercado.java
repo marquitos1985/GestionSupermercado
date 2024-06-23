@@ -267,8 +267,8 @@ public class GestorSupermercado {
         agregarButton.setEnabled(false);
         eliminarButton.setEnabled(false);
         generarFacturaButton.setEnabled(false);
-        //ingresarButton1.setEnabled(false);
-        //ingresarButton3.setEnabled(false);
+        ingresarButton1.setEnabled(false);
+        ingresarButton3.setEnabled(false);
     }
     private void levantarJson(){
         this.gestorVendedores.levantarArchivoJsonUsuarios(archivoUsuarios);
