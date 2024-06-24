@@ -36,14 +36,10 @@ public class GestorSupermercado {
     private JLabel contraseniaLabel;
     private JLabel vendedorLabel;
     private JLabel vendedorActivoLabel;
-    private JLabel seleccionClienteLabel;
     private JLabel dniClienteLabel;
     private JLabel clienteLabel;
     private JLabel clienteEncontradoLabel;
     private JLabel productosLabel;
-    private JLabel ventaLabel;
-    private JLabel carritoLabel;
-    private JScrollPane productosScrollPane;
     private JLabel subtotalLabel;
     private JTextField admdniTextField1;
     private JButton ingresarButton2;
@@ -79,9 +75,6 @@ public class GestorSupermercado {
         this.gestorClientes = new GestorUsuario<>();
         this.gestorProductos = new GestorProductos();
         levantarJson();
-
-
-
     }
 
     public void iniciarSistema(){
@@ -102,9 +95,9 @@ public class GestorSupermercado {
         ingresarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 if(!(usuarioTextField.getText().isBlank() && usuarioTextField.getText().isEmpty())){
                     Vendedor vendedor = gestorVendedores.buscarUsuarioPorDni(Integer.valueOf(usuarioTextField.getText()));
+                    System.out.println(vendedor);
                     if(vendedor != null){
                         if(vendedor.getContraseña().equals(new String(passwordField.getPassword()))){
                             JOptionPane.showMessageDialog(null, "Ingreso exitoso....");
@@ -118,9 +111,9 @@ public class GestorSupermercado {
                         JOptionPane.showMessageDialog(null, "Vendedor inexistente...");
                     }
                 }
-
             }
         });
+
 
 
         buscarButton.addActionListener(new ActionListener() {
@@ -141,7 +134,6 @@ public class GestorSupermercado {
             }
         });
 
-
         tipoProductosJComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -151,13 +143,9 @@ public class GestorSupermercado {
                 for (Producto prod: listaProductosFiltrada) {
                     modelProductos.addElement(prod);
                 }
-
                 productosJList = actualizarJList(productosJList, listaProductosFiltrada);
-
             }
         });
-
-
 
         agregarButton.addActionListener(new ActionListener() {
             @Override
@@ -180,7 +168,6 @@ public class GestorSupermercado {
                 }else {
                     JOptionPane.showMessageDialog(null, "No seleccinó producto para a agregar al carrito...");
                 }
-
 
             }
         });
@@ -292,5 +279,7 @@ public class GestorSupermercado {
         gestor.iniciarSistema();
 
     }
+
+
 
 }
