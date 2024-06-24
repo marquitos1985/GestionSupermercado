@@ -54,6 +54,8 @@ public class GestionUsuariosGui {
     private JButton eliminarButton;
     private JLabel usuarioAeliminarJLabel;
     private JCheckBox activarCheckBox;
+    private JScrollPane usuariosPorTipoScrollPane;
+    private JScrollPane todosLosUsuariosScrollPane;
     private final String archivoUsuarios;
 
     private GestorUsuario<Cliente> gestorClientes;
@@ -136,21 +138,21 @@ public class GestionUsuariosGui {
                 Administrador administrador = null;
 
 
-
-                //TODO  VERIFICAR QUE QUEDE GUARDADO EN EL JASON Y COMPROBAR
-
                 if(clienteCheckBox.isSelected()){
                     if(verificarCamposUsuario()){
-                        cliente = new Cliente(nombreCompletoTextField2.getText(), Integer.valueOf(dniTextField1.getText()), direccionTextField3.getText(),
-                                                    telefonoTextField4.getText(), true, emailTextField5.getText());
-                        if(socioCheckBox.isSelected()){
-                            cliente.setSocio(true);
-                        }else {
-                            cliente.setSocio(false);
-                        }
-                        if(gestorClientes.crearUsuario(cliente)){
+                        if(!gestorClientes.dniExiste(Integer.valueOf(dniTextField1.getText()))){//VERIFICA EN LAS 3 listas 8clientes, vendedores y administradores)
+
+                            cliente = new Cliente(nombreCompletoTextField2.getText(), Integer.valueOf(dniTextField1.getText()), direccionTextField3.getText(),
+                                    telefonoTextField4.getText(), true, emailTextField5.getText());
+                            if(socioCheckBox.isSelected()){
+                                cliente.setSocio(true);
+                            }else {
+                                cliente.setSocio(false);
+                            }
+                            gestorClientes.crearUsuario(cliente);
                             gestorClientes.guardarArchivoJsonUsuarios(archivoUsuarios);
                             JOptionPane.showMessageDialog(null, "Cliente creado exitosamente...");
+
                         }else {
                             JOptionPane.showMessageDialog(null, "Usuario ya existente...");
                         }
@@ -159,32 +161,34 @@ public class GestionUsuariosGui {
                     }
 
                 }else if(vendedorCheckBox.isSelected()){
-                    if(verificarCamposEmpleado()){
-                        vendedor = new Vendedor(nombreCompletoTextField2.getText(), Integer.valueOf(dniTextField1.getText()), direccionTextField3.getText(),
-                                telefonoTextField4.getText(), true, emailTextField5.getText(), contraseñaTextField6.getText(),
-                                Float.valueOf(sueldoTextField7.getText()), (Turno) turnoComboBox1.getSelectedItem());
+                    if(verificarCamposEmpleado()) {
+                        if (!gestorVendedores.dniExiste(Integer.valueOf(dniTextField1.getText()))) {//VERIFICA EN LAS 3 listas 8clientes, vendedores y administradores)
 
+                            vendedor = new Vendedor(nombreCompletoTextField2.getText(), Integer.valueOf(dniTextField1.getText()), direccionTextField3.getText(),
+                                    telefonoTextField4.getText(), true, emailTextField5.getText(), contraseñaTextField6.getText(),
+                                    Float.valueOf(sueldoTextField7.getText()), (Turno) turnoComboBox1.getSelectedItem());
 
-                        if(gestorVendedores.crearUsuario(vendedor)){
+                            gestorVendedores.crearUsuario(vendedor);
                             gestorVendedores.guardarArchivoJsonUsuarios(archivoUsuarios);
                             JOptionPane.showMessageDialog(null, "Vendedor creado exitosamente...");
+
+
 
                         }else {
                             JOptionPane.showMessageDialog(null, "Usuario ya existente...");
                         }
-
                     }else {
                         JOptionPane.showMessageDialog(null, "Debe completar todos los campos correspondientes...");
                     }
+                } else if(administradorCheckBox.isSelected()) {
+                    if (verificarCamposEmpleado()) {
 
-                } else if(administradorCheckBox.isSelected()){
-                    if(verificarCamposEmpleado()){
-                        administrador = new Administrador(nombreCompletoTextField2.getText(), Integer.valueOf(dniTextField1.getText()), direccionTextField3.getText(),
-                                                                telefonoTextField4.getText(), true, emailTextField5.getText(), contraseñaTextField6.getText(),
-                                                                Float.valueOf(sueldoTextField7.getText()));
+                        if (!gestorAdministradores.dniExiste(Integer.valueOf(dniTextField1.getText()))) {//VERIFICA EN LAS 3 listas 8clientes, vendedores y administradores)
+                            administrador = new Administrador(nombreCompletoTextField2.getText(), Integer.valueOf(dniTextField1.getText()), direccionTextField3.getText(),
+                                    telefonoTextField4.getText(), true, emailTextField5.getText(), contraseñaTextField6.getText(),
+                                    Float.valueOf(sueldoTextField7.getText()));
 
-
-                        if(gestorAdministradores.crearUsuario(administrador)){
+                            gestorAdministradores.crearUsuario(administrador);
                             gestorAdministradores.guardarArchivoJsonUsuarios(archivoUsuarios);
                             JOptionPane.showMessageDialog(null, "Administrador creado exitosamente...");
 
@@ -197,26 +201,8 @@ public class GestionUsuariosGui {
                     }
 
                 }
-/*
-                if(cliente != null){
-                    gestorClientes.guardarArchivoJsonUsuarios(archivoUsuarios);
-                    JOptionPane.showMessageDialog(null, "Cliente creado exitosamente...");
-                }
-                if(vendedor != null){
-                    gestorVendedores.guardarArchivoJsonUsuarios(archivoUsuarios);
-                    JOptionPane.showMessageDialog(null, "Vendedor creado exitosamente...");
-                }
-                if (administrador != null){
-                    gestorAdministradores.guardarArchivoJsonUsuarios(archivoUsuarios);
-                    JOptionPane.showMessageDialog(null, "Administrador creado exitosamente...");
-                }
-
-
- */
             }
         });
-
-
 
 
     ////////////////////////////////////     SOLAPA MODIFICAR    ////////////////////////////////////////////////

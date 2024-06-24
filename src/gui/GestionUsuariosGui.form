@@ -479,14 +479,6 @@
                 </constraints>
                 <properties/>
               </component>
-              <component id="73dac" class="javax.swing.JList" binding="usuariosPorTipoList1">
-                <constraints>
-                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="2" anchor="0" fill="3" indent="0" use-parent-layout="false">
-                    <preferred-size width="150" height="50"/>
-                  </grid>
-                </constraints>
-                <properties/>
-              </component>
               <component id="d11f0" class="javax.swing.JLabel">
                 <constraints>
                   <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
@@ -494,14 +486,6 @@
                 <properties>
                   <text value="Todos los usuarios"/>
                 </properties>
-              </component>
-              <component id="4cdc0" class="javax.swing.JList" binding="todoslosUsuariosList2">
-                <constraints>
-                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="2" anchor="0" fill="3" indent="0" use-parent-layout="false">
-                    <preferred-size width="150" height="50"/>
-                  </grid>
-                </constraints>
-                <properties/>
               </component>
               <component id="4e82c" class="javax.swing.JButton" binding="verButton" default-binding="true">
                 <constraints>
@@ -511,6 +495,32 @@
                   <text value="Ver"/>
                 </properties>
               </component>
+              <scrollpane id="24db6" binding="usuariosPorTipoScrollPane">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="73dac" class="javax.swing.JList" binding="usuariosPorTipoList1">
+                    <constraints/>
+                    <properties/>
+                  </component>
+                </children>
+              </scrollpane>
+              <scrollpane id="d6ee0" binding="todosLosUsuariosScrollPane">
+                <constraints>
+                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="4cdc0" class="javax.swing.JList" binding="todoslosUsuariosList2">
+                    <constraints/>
+                    <properties/>
+                  </component>
+                </children>
+              </scrollpane>
             </children>
           </grid>
         </children>

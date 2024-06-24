@@ -70,9 +70,31 @@ public class GestorUsuario<T extends Usuario & Comparable<T>> {
     }
 
     public boolean dniExiste(Integer dni) {
+        for (Cliente cliente : clientes) {
+            if (cliente.getDni().equals(dni)) {
+                return true;
+            }
+        }
+        for (Administrador admin : administradores) {
+            if (admin.getDni().equals(dni)) {
+                return true;
+            }
+        }
+        for (Vendedor vendedor : vendedores) {
+            if (vendedor.getDni().equals(dni)) {
+                return true;
+            }
+        }
+        return false;
+
+/*
         return  (this.clientes.stream().anyMatch(cliente -> cliente.getDni().equals(dni)) ||
                 this.vendedores.stream().anyMatch(vendedor -> vendedor.getDni().equals(dni)) ||
                 this.administradores.stream().anyMatch(administrador -> administrador.getDni().equals(dni)));
+
+
+ */
+
     }
 
     public boolean modificarSueldoUsario(Integer dni, float sueldoNuevo) {
@@ -119,56 +141,6 @@ public class GestorUsuario<T extends Usuario & Comparable<T>> {
            }
         }
 
-
-
-/*
-public boolean crearUsuario(T usuarioNuevo) {//busca el usuario, si no existe => lo agrega y retorna true, si existe y está activo => false, si existe y está inactivo => lo reemplaza por el nuevo
-    if (usuarioNuevo instanceof Cliente) {
-        for (Cliente cliente : clientes) {
-            if (cliente.getDni().equals(usuarioNuevo.getDni())) {
-                if(cliente.getActivo()){
-                    return false;
-                }else {
-                    cliente.setActivo(true);
-                    cliente = (Cliente) usuarioNuevo;
-                    return true;
-                }
-            }
-        }
-        return clientes.add((Cliente) usuarioNuevo);
-    } else if (usuarioNuevo instanceof Administrador) {
-        for (Administrador admin : administradores) {
-            if (admin.getDni().equals(usuarioNuevo.getDni())) {
-                if(admin.getActivo()){
-                    return false;
-                }else {
-                    admin.setActivo(true);
-                    admin = (Administrador) usuarioNuevo;
-                    return true;
-                }
-            }
-        }
-        return administradores.add((Administrador) usuarioNuevo);
-    } else if (usuarioNuevo instanceof Vendedor) {
-        for (Vendedor vendedor : vendedores) {
-            if (vendedor.getDni().equals(usuarioNuevo.getDni())) {
-                if(vendedor.getActivo()){
-                    return false;
-                }else {
-                    vendedor.setActivo(true);
-                    vendedor = (Vendedor) usuarioNuevo;
-                    return true;
-                }
-            }
-        }
-        return vendedores.add((Vendedor) usuarioNuevo);
-    } else {
-        return false;
-    }
-}
-
-
- */
 
 
     public T buscarUsuarioPorDni(Integer dni) {

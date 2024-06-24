@@ -48,6 +48,8 @@ public class GestionProductosGui {
     private JList verProductosPorTipoList1;
     private JList verTodosLosProductosList1;
     private JButton verButton;
+    private JScrollPane verProductosPorTipoScrollPane;
+    private JScrollPane verTodosLosProductosScrollPane;
     private final String archivoProductos;
     private GestorProductos gestorProductos;
     private Producto productoEliminar;
@@ -196,10 +198,10 @@ public class GestionProductosGui {
         ELIMINARButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Se eliminó el producto: " + productoEliminar);
 
                 gestorProductos.eliminarProducto(productoEliminar);
                 gestorProductos.guardarArchivoJsonProductos(archivoProductos);
+                JOptionPane.showMessageDialog(null, "Se eliminó el producto: " + productoEliminar);
             }
         });
 

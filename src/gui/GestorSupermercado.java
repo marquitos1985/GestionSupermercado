@@ -196,7 +196,7 @@ public class GestorSupermercado {
                     try {
                         caja.agregarProducto(prod);
 
-                        carritoJList = actualizarJList(carritoJList, caja.getCarrito().getProductos().keySet().stream().toList());//TODO achicar esto por favor
+                        carritoJList = actualizarJList(carritoJList, caja.getCarrito().getProductos().keySet().stream().toList());
                         cantidadJList = actualizarJList(cantidadJList, caja.getCarrito().getProductos().values().stream().toList());
 
                         TipoProducto tipoProductoSeleccionado = (TipoProducto) tipoProductosJComboBox.getSelectedItem();
