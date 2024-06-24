@@ -18,19 +18,8 @@ public class GestorProductos {
         this.objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
-/*
-    public Producto crearProducto (String idProducto, String nombre, String marca, TipoProducto tipoProducto, Float precio, String descripcion, String fechaDeVencimiento, int stock) {
-        return new Producto(crearId(tipoProducto), nombre, marca, tipoProducto, precio, descripcion, fechaDeVencimiento, stock);
-    }
-    public Producto crearProductoPorPeso (String idProducto, String nombre, String marca, TipoProducto tipoProducto, float precio, String descripcion, String fechaDeVencimiento, int stock,
-                                          float peso, float precioPorPeso){
-        return new ProductoPorPeso(crearId(tipoProducto), nombre, marca, tipoProducto, precio, descripcion, fechaDeVencimiento, stock, peso, precioPorPeso);
 
-    }
-
-
- */
-    public Producto crearProducto (String nombre, String marca, TipoProducto tipoProducto, Float precio, String descripcion, String fechaDeVencimiento, int stock) {
+    public Producto crearProducto (String nombre, String marca, TipoProducto tipoProducto, Float precio, String descripcion, String fechaDeVencimiento, int stock) {//TODO verificar que el precio no sea negativo
         return new Producto(crearId(tipoProducto), nombre, marca, tipoProducto, precio, descripcion, fechaDeVencimiento, stock);
     }
     public Producto crearProductoPorPeso (String nombre, String marca, TipoProducto tipoProducto, float precio, String descripcion, String fechaDeVencimiento, int stock,

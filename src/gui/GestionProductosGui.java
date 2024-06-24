@@ -6,8 +6,10 @@ import productos.ProductoPorPeso;
 import productos.TipoProducto;
 
 import javax.swing.*;
+import javax.swing.text.NumberFormatter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class GestionProductosGui {
@@ -53,7 +55,7 @@ public class GestionProductosGui {
 
     public GestionProductosGui(GestorProductos gestorProductos, String archivoProductos) {
 
-        this.gestorProductos= gestorProductos;
+        this.gestorProductos = gestorProductos;
         this.archivoProductos = archivoProductos;
 
 
@@ -64,13 +66,12 @@ public class GestionProductosGui {
         acciones();
 
 
-
     }
 
-    private void acciones(){
+    private void acciones() {
         inhabilitarCampos();
         inhabilitarBotones();
-        for (TipoProducto tipo: TipoProducto.values()){
+        for (TipoProducto tipo : TipoProducto.values()) {
             tipoProductoComboBox1.addItem(tipo);
             tipoProductoComboBox2.addItem(tipo);
             verProductosPorTipoComboBox1.addItem(tipo);
@@ -82,21 +83,33 @@ public class GestionProductosGui {
         productoModificar = null;
 
 
-        ////////////////////////////////////////////     SOLAPA CREAR     ////////////////////////////////////////////
+        ////////////////////////////////////////////     SOLAPA CREAR     ////////////////////////////////////////////TODO verificar los campos de crear, para que no generen error por ejemplo en precio negativo
+        porPesoCheckBox1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (porPesoCheckBox1.isSelected()) {
+                    pesoTextField8.setEnabled(true);
+                    precioPesoTextField9.setEnabled(true);
+                } else {
+                    pesoTextField8.setEnabled(false);
+                    precioPesoTextField9.setEnabled(false);
+                }
 
+            }
+        });
         crearButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Producto producto = null;
-                if(verificarCamposVaciosCreacion()){
-                    if(!porPesoCheckBox1.isSelected()){
+                if (verificarCamposVaciosCreacion()) {
+                    if (!porPesoCheckBox1.isSelected()) {
                         producto = gestorProductos.crearProducto(nombreTextField2.getText(), marcaTextField3.getText(),
                                 (TipoProducto) tipoProductoComboBox1.getSelectedItem(), Float.valueOf(precioTextField5.getText()),
                                 descripcionTextField6.getText(), fechaVencTextField7.getText(), Integer.valueOf(stockTextField4.getText()));
                         gestorProductos.agregarProducto(producto);
 
 
-                    }else {
+                    } else {
                         producto = gestorProductos.crearProductoPorPeso(nombreTextField2.getText(), marcaTextField3.getText(),
                                 (TipoProducto) tipoProductoComboBox1.getSelectedItem(), Float.valueOf(precioTextField5.getText()),
                                 descripcionTextField6.getText(), fechaVencTextField7.getText(), Integer.valueOf(stockTextField4.getText()),
@@ -105,32 +118,33 @@ public class GestionProductosGui {
 
 
                     }
-                    if(producto != null){
+                    if (producto != null) {
                         gestorProductos.guardarArchivoJsonProductos("productos.json");
-                        JOptionPane.showMessageDialog(null,"Creación exitosa...");
+                        JOptionPane.showMessageDialog(null, "Creación exitosa...");
                     }
-                }else {
-                    JOptionPane.showMessageDialog(null,"Complete todos los campos...");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Complete todos los campos...");
                 }
             }
         });
 
-        ////////////////////////////////////////////     SOLAPA MODIFICAR     ////////////////////////////////////////////
+        ////////////////////////////////////////////     SOLAPA MODIFICAR     ////////////////////////////////////////////TODO verificar los campos de crear, para que no generen error por ejemplo en precio negativo
 
         buscarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(!(idProductoTextField1.getText().isEmpty() && idProductoTextField1.getText().isBlank())){
-                    productoModificar = gestorProductos.buscarPorId(idProductoTextField1.getText());
+                //if (!(idProductoTextField1.getText().isEmpty() && idProductoTextField1.getText().isBlank())) {
+                if (!verificarCampoVacio(idProductoTextField1.getText())) {
+                    productoModificar = gestorProductos.buscarPorId(idProductoTextField1.getText().toUpperCase());
 
-                    if(productoModificar != null){
+                    if (productoModificar != null) {
                         JOptionPane.showMessageDialog(null, "Producto encontrado...");
                         prodEncontradoLabel.setText(productoModificar.toString());
                         setCamposModificar(productoModificar);
 
                         modificarButton.setEnabled(true);
 
-                    }else {
+                    } else {
                         JOptionPane.showMessageDialog(null, "Producto inexistente...");
                     }
                 }
@@ -138,18 +152,17 @@ public class GestionProductosGui {
         });
 
 
-
         modificarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if(verificarCamposVaciosModificacion()){
-                    if(productoModificar instanceof ProductoPorPeso){
+                if (verificarCamposVaciosModificacion()) {
+                    if (productoModificar instanceof ProductoPorPeso) {
                         gestorProductos.modificarProductoPorPeso((ProductoPorPeso) productoModificar, nombreTextField11.getText(),
                                 marcaTextField12.getText(), (TipoProducto) tipoProductoComboBox2.getSelectedItem(), Float.valueOf(precioTextField13.getText()),
                                 descripcionTextField14.getText(), venciminetoTextField15.getText(), Integer.valueOf(stockTextField16.getText()),
                                 Float.valueOf(pesoTextField17.getText()), Float.valueOf(precioPorPesoTextField18.getText()));
-                    }else {
+                    } else {
                         gestorProductos.modificarProducto(productoModificar, nombreTextField11.getText(),
                                 marcaTextField12.getText(), (TipoProducto) tipoProductoComboBox2.getSelectedItem(), Float.valueOf(precioTextField13.getText()),
                                 descripcionTextField14.getText(), venciminetoTextField15.getText(), Integer.valueOf(stockTextField16.getText()));
@@ -167,12 +180,13 @@ public class GestionProductosGui {
         buscarButton1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(!(idProductoTextField10.getText().isEmpty() && idProductoTextField10.getText().isBlank())){
-                    productoEliminar = gestorProductos.buscarPorId(idProductoTextField10.getText());
-                    if(productoEliminar != null){
+                if (!verificarCampoVacio(idProductoTextField10.getText())) {
+                    productoEliminar = gestorProductos.buscarPorId(idProductoTextField10.getText().toUpperCase());
+                    if (productoEliminar != null) {
                         JOptionPane.showMessageDialog(null, "Producto encontrado...");
                         productoEncontradoJLabel.setText(productoEliminar.toString());
-                    }else {
+                        ELIMINARButton.setEnabled(true);
+                    } else {
                         JOptionPane.showMessageDialog(null, "Producto inexistente...");
                     }
                 }
@@ -196,9 +210,9 @@ public class GestionProductosGui {
             @Override
             public void actionPerformed(ActionEvent e) {
                 List<Producto> lista = gestorProductos.buscarPorTipo((TipoProducto) verProductosPorTipoComboBox1.getSelectedItem());
-                if(!lista.isEmpty()){
+                if (!lista.isEmpty()) {
                     actualizarJList(verProductosPorTipoList1, lista);
-                }else {
+                } else {
                     JOptionPane.showMessageDialog(null, "El tipo no tiene productos....");
                 }
 
@@ -208,9 +222,9 @@ public class GestionProductosGui {
             @Override
             public void actionPerformed(ActionEvent e) {
                 List<Producto> lista = gestorProductos.listar();
-                if(!lista.isEmpty()){
+                if (!lista.isEmpty()) {
                     actualizarJList(verTodosLosProductosList1, lista);
-                }else {
+                } else {
                     JOptionPane.showMessageDialog(null, "No existen productos....");
                 }
 
@@ -220,7 +234,7 @@ public class GestionProductosGui {
 
     }
 
-    public boolean verificarCamposVaciosCreacion(){
+    public boolean verificarCamposVaciosCreacion() {
 
         boolean salida = false;
         if (!(nombreTextField2.getText().isEmpty() && nombreTextField2.getText().isBlank()) &&
@@ -228,13 +242,13 @@ public class GestionProductosGui {
                 !(precioTextField5.getText().isEmpty() && precioTextField5.getText().isBlank()) &&
                 !(descripcionTextField6.getText().isEmpty() && descripcionTextField6.getText().isBlank()) &&
                 !(fechaVencTextField7.getText().isEmpty() && fechaVencTextField7.getText().isBlank()) &&
-                !(stockTextField4.getText().isEmpty() && stockTextField4.getText().isBlank())){
-            if(porPesoCheckBox1.isSelected() &&
+                !(stockTextField4.getText().isEmpty() && stockTextField4.getText().isBlank())) {
+            if (porPesoCheckBox1.isSelected() &&
                     !(pesoTextField8.getText().isEmpty() && pesoTextField8.getText().isBlank()) &&
-                    !(precioPesoTextField9.getText().isEmpty() && precioPesoTextField9.getText().isBlank())){
+                    !(precioPesoTextField9.getText().isEmpty() && precioPesoTextField9.getText().isBlank())) {
                 salida = true;
 
-            }else {
+            } else {
                 salida = true;
             }
 
@@ -243,7 +257,7 @@ public class GestionProductosGui {
         return salida;
     }
 
-    public boolean verificarCamposVaciosModificacion(){
+    public boolean verificarCamposVaciosModificacion() {
 
         boolean salida = false;
         if (!(nombreTextField11.getText().isEmpty() && nombreTextField11.getText().isBlank()) &&
@@ -251,13 +265,13 @@ public class GestionProductosGui {
                 !(precioTextField13.getText().isEmpty() && precioTextField13.getText().isBlank()) &&
                 !(descripcionTextField14.getText().isEmpty() && descripcionTextField14.getText().isBlank()) &&
                 !(venciminetoTextField15.getText().isEmpty() && venciminetoTextField15.getText().isBlank()) &&
-                !(stockTextField16.getText().isEmpty() && stockTextField16.getText().isBlank())){
-            if(porPesoCheckBox1.isSelected() &&
+                !(stockTextField16.getText().isEmpty() && stockTextField16.getText().isBlank())) {
+            if (porPesoCheckBox1.isSelected() &&
                     !(pesoTextField17.getText().isEmpty() && pesoTextField17.getText().isBlank()) &&
-                    !(precioPorPesoTextField18.getText().isEmpty() && precioPorPesoTextField18.getText().isBlank())){
+                    !(precioPorPesoTextField18.getText().isEmpty() && precioPorPesoTextField18.getText().isBlank())) {
                 salida = true;
 
-            }else {
+            } else {
                 salida = true;
             }
 
@@ -266,10 +280,12 @@ public class GestionProductosGui {
         return salida;
     }
 
-    private void inhabilitarBotones(){
+    private void inhabilitarBotones() {
         modificarButton.setEnabled(false);
+        ELIMINARButton.setEnabled(false);
     }
-    public void setCamposModificar(Producto producto){
+
+    public void setCamposModificar(Producto producto) {
         nombreTextField11.setEnabled(true);
         marcaTextField12.setEnabled(true);
         precioTextField13.setEnabled(true);
@@ -285,7 +301,7 @@ public class GestionProductosGui {
         stockTextField16.setText(String.valueOf(producto.getStock()));
         tipoProductoComboBox2.setSelectedItem(producto.getTipoProducto());
 
-        if(producto instanceof ProductoPorPeso){
+        if (producto instanceof ProductoPorPeso) {
             pesoTextField17.setEnabled(true);
             precioPorPesoTextField18.setEnabled(true);
 
@@ -293,7 +309,16 @@ public class GestionProductosGui {
             precioPorPesoTextField18.setText(String.valueOf(((ProductoPorPeso) producto).getPrecioPorPeso()));
         }
     }
-    private void inhabilitarCampos(){
+
+    private void inhabilitarCampos() {
+
+        //// SOLAPA CREAR
+
+        porPesoCheckBox1.setSelected(false);
+        pesoTextField8.setEnabled(false);
+        precioPesoTextField9.setEnabled(false);
+
+        //// SOLAPA MODIFICAR
         nombreTextField11.setEnabled(false);
         marcaTextField12.setEnabled(false);
         precioTextField13.setEnabled(false);
@@ -305,13 +330,20 @@ public class GestionProductosGui {
     }
 
 
-    public <T> JList actualizarJList(JList jList, List<T> lista){
+    public <T> JList actualizarJList(JList jList, List<T> lista) {
         DefaultListModel<T> model = new DefaultListModel<>();
-        for (T elemento: lista) {
+        for (T elemento : lista) {
             model.addElement(elemento);
         }
         jList.setModel(model);
 
-        return  jList;
+        return jList;
     }
+
+    private boolean verificarCampoVacio(String cadena){//true si el la cadena está vacía
+        return (cadena.isBlank() && cadena.isEmpty());
+    }
+
+
+
 }

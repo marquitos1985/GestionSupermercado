@@ -5,6 +5,7 @@ import productos.Producto;
 import productos.StockException;
 import productos.TipoProducto;
 import usuarios.GestorUsuario;
+import usuarios.Usuario;
 import usuarios.clientes.Cliente;
 import usuarios.empleados.administrador.Administrador;
 import usuarios.empleados.vendedor.Vendedor;
@@ -77,10 +78,19 @@ public class GestorSupermercado {
         levantarJson();
     }
 
+
+    public static void main(String[] args) {
+        GestorSupermercado gestor = new GestorSupermercado();
+        gestor.iniciarSistema();
+
+    }
+
+
+
     public void iniciarSistema(){
         Caja caja = new Caja();
         caja.setGestorProductos(this.gestorProductos);
-
+        inhailitarCampos();
         inhabilitarBotones();
 
         for (TipoProducto tipo: TipoProducto.values()){
@@ -91,14 +101,39 @@ public class GestorSupermercado {
 
         DefaultListModel modelProductos = new DefaultListModel<>();
 
+
+        ////////////////////////////////////////
+        System.out.println("VEndedores de gestor vendedores");
+        System.out.println(gestorVendedores.listarVendeores());
+        System.out.println("Clientes de gestor vendedores");
+        System.out.println(gestorVendedores.listarClientes());
+        System.out.println("Administradores de gestor vendedores");
+        System.out.println(gestorVendedores.listarAdministradores());
+
+        System.out.println("Vendedores de gestor clientes");
+        System.out.println(gestorClientes.listarVendeores());
+        System.out.println("Clientes de gestor clientes");
+        System.out.println(gestorClientes.listarClientes());
+        System.out.println("Administradores de gestor clientes");
+        System.out.println(gestorClientes.listarAdministradores());
+
+
+
         //////////////////////////////////////////    SOLAPA VENDEDOR     //////////////////////////////////////////
         ingresarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(!(usuarioTextField.getText().isBlank() && usuarioTextField.getText().isEmpty())){
-                    Vendedor vendedor = gestorVendedores.buscarUsuarioPorDni(Integer.valueOf(usuarioTextField.getText()));
-                    System.out.println(vendedor);
-                    if(vendedor != null){
+
+                //System.out.println("Text " + usuarioTextField.getText() + "Matches " + usuarioTextField.getText().matches("[0-9]+"));
+
+                if(verificarCampoNumerico(usuarioTextField.getText())){//TODO si el numero ingresado en el campo es muy grande, por ej: 3188502731885027 tira error (debe ser por el alcance de Integer)
+                    //Vendedor vendedor = gestorVendedores.buscarUsuarioPorDni(Integer.valueOf(usuarioTextField.getText()));
+                    Usuario usuario = gestorVendedores.buscarUsuarioPorDni(Integer.valueOf(usuarioTextField.getText()));
+
+                    //if(vendedor != null && vendedor instanceof Vendedor){
+                    if(usuario != null && usuario instanceof Vendedor){
+                        Vendedor vendedor = (Vendedor) usuario;
+                        //if(vendedor.getContraseña().equals(new String(passwordField.getPassword()))){
                         if(vendedor.getContraseña().equals(new String(passwordField.getPassword()))){
                             JOptionPane.showMessageDialog(null, "Ingreso exitoso....");
                             vendedorActivoLabel.setText(("DNI: " + vendedor.getDni() + " - " + vendedor.getNombreCompleto()).toUpperCase());
@@ -119,17 +154,23 @@ public class GestorSupermercado {
         buscarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Cliente cliente = gestorClientes.buscarUsuarioPorDni(Integer.valueOf(dniClienteTextField.getText()));
 
-                if(cliente != null){
-                    JOptionPane.showMessageDialog(null, "Cliente encontrado...");
-                    clienteEncontradoLabel.setText(("DNI: " + cliente.getDni() + " - " + cliente.getNombreCompleto()).toUpperCase());
-                    caja.setCliente(cliente);
-                    agregarButton.setEnabled(true);
-                    eliminarButton.setEnabled(true);
-                    generarFacturaButton.setEnabled(true);
-                }else {
-                    JOptionPane.showMessageDialog(null, "Cliente inexistente...");
+                if(verificarCampoNumerico(dniClienteTextField.getText())) {
+                    //Cliente cliente = gestorClientes.buscarUsuarioPorDni(Integer.valueOf(dniClienteTextField.getText()));
+                    Usuario usuario = gestorClientes.buscarUsuarioPorDni(Integer.valueOf(dniClienteTextField.getText()));
+
+                    //if(cliente != null){
+                    if (usuario != null && usuario instanceof Cliente) {
+                        Cliente cliente = (Cliente) usuario;
+                        JOptionPane.showMessageDialog(null, "Cliente encontrado...");
+                        clienteEncontradoLabel.setText(("DNI: " + cliente.getDni() + " - " + cliente.getNombreCompleto()).toUpperCase());
+                        caja.setCliente(cliente);
+
+                        setEnabledProductosYcarrito();
+
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Cliente inexistente...");
+                    }
                 }
             }
         });
@@ -154,8 +195,8 @@ public class GestorSupermercado {
                 if(prod != null){
                     try {
                         caja.agregarProducto(prod);
-                        //carritoJList = actualizarJList(carritoJList, caja.getCarrito().getProductos().entrySet().stream().toList());
-                        carritoJList = actualizarJList(carritoJList, caja.getCarrito().getProductos().keySet().stream().toList());
+
+                        carritoJList = actualizarJList(carritoJList, caja.getCarrito().getProductos().keySet().stream().toList());//TODO achicar esto por favor
                         cantidadJList = actualizarJList(cantidadJList, caja.getCarrito().getProductos().values().stream().toList());
 
                         TipoProducto tipoProductoSeleccionado = (TipoProducto) tipoProductosJComboBox.getSelectedItem();
@@ -199,7 +240,12 @@ public class GestorSupermercado {
         generarFacturaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            caja.finalizarCompra();
+                if(!caja.getCarrito().isVacio()){
+                    caja.finalizarCompra();
+                }else {
+                    JOptionPane.showMessageDialog(null, "Carrito vacío...");
+                }
+
         }});
     //////////////////////////////////////////    SOLAPA ADMINISTRADOR     //////////////////////////////////////////
 
@@ -207,9 +253,13 @@ public class GestorSupermercado {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if(!(admdniTextField1.getText().isBlank() && admdniTextField1.getText().isEmpty())){
-                    Administrador administrador = gestorAdministradores.buscarUsuarioPorDni(Integer.valueOf(admdniTextField1.getText()));
-                    if(administrador != null){
+                //if(!(admdniTextField1.getText().isBlank() && admdniTextField1.getText().isEmpty())){
+                if(verificarCampoNumerico(admdniTextField1.getText())){
+                    //Administrador administrador = gestorAdministradores.buscarUsuarioPorDni(Integer.valueOf(admdniTextField1.getText()));
+                    Usuario usuario = gestorAdministradores.buscarUsuarioPorDni(Integer.valueOf(admdniTextField1.getText()));
+                    //if(administrador != null){
+                    if(usuario != null && usuario instanceof Administrador){
+                        Administrador administrador = (Administrador) usuario;
                         if(administrador.getContraseña().equals(new String(passwordField1.getPassword()))){
                             JOptionPane.showMessageDialog(null, "Ingreso exitoso....");
                             administradorActivoLabel.setText(("DNI: " + administrador.getDni() + " - " + administrador.getNombreCompleto()).toUpperCase());
@@ -257,6 +307,12 @@ public class GestorSupermercado {
         ingresarButton1.setEnabled(false);
         ingresarButton3.setEnabled(false);
     }
+
+    private void inhailitarCampos(){
+        productosJList.setEnabled(false);
+        carritoJList.setEnabled(false);
+        tipoProductosJComboBox.setEnabled(false);
+    }
     private void levantarJson(){
         this.gestorVendedores.levantarArchivoJsonUsuarios(archivoUsuarios);
         this.gestorAdministradores.levantarArchivoJsonUsuarios(archivoUsuarios);
@@ -274,11 +330,37 @@ public class GestorSupermercado {
         return  jList;
     }
 
-    public static void main(String[] args) {
-        GestorSupermercado gestor = new GestorSupermercado();
-        gestor.iniciarSistema();
 
+    private boolean verificarCampoVacio(String cadena){//true si el la cadena está vacía
+        return (cadena.isBlank() && cadena.isEmpty());
     }
+    private boolean verificarCampoNumerico(String cadena){//true si la cadena contiene solo numeros
+        return cadena.matches("[0-9]+");
+    }
+
+    private boolean verificarCampoDni(String cadena){//true si la cadena no está vacía y contiene sólo números
+        return !verificarCampoVacio(cadena) && verificarCampoNumerico(cadena);
+    }
+
+    private void setEnabledProductosYcarrito(){
+        tipoProductosJComboBox.setEnabled(true);
+        productosJList.setEnabled(true);
+        carritoJList.setEnabled(true);
+        agregarButton.setEnabled(true);
+        eliminarButton.setEnabled(true);
+        generarFacturaButton.setEnabled(true);
+    }
+
+
+
+
+
+
+
+
+
+
+
 
 
 

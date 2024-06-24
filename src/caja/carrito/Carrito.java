@@ -69,4 +69,7 @@ public class Carrito {
         }
         return subtotal;
     }
+    public boolean isVacio(){
+        return this.productos.isEmpty();
+    }
 }
