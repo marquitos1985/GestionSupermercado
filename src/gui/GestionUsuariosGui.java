@@ -140,21 +140,24 @@ public class GestionUsuariosGui {
 
                 if(clienteCheckBox.isSelected()){
                     if(verificarCamposUsuario()){
-                        if(!gestorClientes.dniExiste(Integer.valueOf(dniTextField1.getText()))){//VERIFICA EN LAS 3 listas 8clientes, vendedores y administradores)
+                        if(verificarCampoNumerico(dniTextField1.getText())) {
+                            if (!gestorClientes.dniExiste(Integer.valueOf(dniTextField1.getText()))) {//VERIFICA EN LAS 3 listas 8clientes, vendedores y administradores)
 
-                            cliente = new Cliente(nombreCompletoTextField2.getText(), Integer.valueOf(dniTextField1.getText()), direccionTextField3.getText(),
-                                    telefonoTextField4.getText(), true, emailTextField5.getText());
-                            if(socioCheckBox.isSelected()){
-                                cliente.setSocio(true);
-                            }else {
-                                cliente.setSocio(false);
+                                cliente = new Cliente(nombreCompletoTextField2.getText(), Integer.valueOf(dniTextField1.getText()), direccionTextField3.getText(),
+                                        telefonoTextField4.getText(), true, emailTextField5.getText());
+                                if (socioCheckBox.isSelected()) {
+                                    cliente.setSocio(true);
+                                } else {
+                                    cliente.setSocio(false);
+                                }
+                                gestorClientes.crearUsuario(cliente);
+                                gestorClientes.guardarArchivoJsonUsuarios(archivoUsuarios);
+                                JOptionPane.showMessageDialog(null, "Cliente creado exitosamente...");
+
+
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Usuario ya existente...");
                             }
-                            gestorClientes.crearUsuario(cliente);
-                            gestorClientes.guardarArchivoJsonUsuarios(archivoUsuarios);
-                            JOptionPane.showMessageDialog(null, "Cliente creado exitosamente...");
-
-                        }else {
-                            JOptionPane.showMessageDialog(null, "Usuario ya existente...");
                         }
                     }else {
                         JOptionPane.showMessageDialog(null, "Debe completar todos los campos correspondientes...");
@@ -162,46 +165,48 @@ public class GestionUsuariosGui {
 
                 }else if(vendedorCheckBox.isSelected()){
                     if(verificarCamposEmpleado()) {
-                        if (!gestorVendedores.dniExiste(Integer.valueOf(dniTextField1.getText()))) {//VERIFICA EN LAS 3 listas 8clientes, vendedores y administradores)
+                        if(verificarCampoNumerico(dniTextField1.getText())) {
 
-                            vendedor = new Vendedor(nombreCompletoTextField2.getText(), Integer.valueOf(dniTextField1.getText()), direccionTextField3.getText(),
-                                    telefonoTextField4.getText(), true, emailTextField5.getText(), contraseñaTextField6.getText(),
-                                    Float.valueOf(sueldoTextField7.getText()), (Turno) turnoComboBox1.getSelectedItem());
+                            if (!gestorVendedores.dniExiste(Integer.valueOf(dniTextField1.getText()))) {//VERIFICA EN LAS 3 listas 8clientes, vendedores y administradores)
 
-                            gestorVendedores.crearUsuario(vendedor);
-                            gestorVendedores.guardarArchivoJsonUsuarios(archivoUsuarios);
-                            JOptionPane.showMessageDialog(null, "Vendedor creado exitosamente...");
+                                vendedor = new Vendedor(nombreCompletoTextField2.getText(), Integer.valueOf(dniTextField1.getText()), direccionTextField3.getText(),
+                                        telefonoTextField4.getText(), true, emailTextField5.getText(), contraseñaTextField6.getText(),
+                                        Float.valueOf(sueldoTextField7.getText()), (Turno) turnoComboBox1.getSelectedItem());
+
+                                gestorVendedores.crearUsuario(vendedor);
+                                gestorVendedores.guardarArchivoJsonUsuarios(archivoUsuarios);
+                                JOptionPane.showMessageDialog(null, "Vendedor creado exitosamente...");
 
 
-
-                        }else {
-                            JOptionPane.showMessageDialog(null, "Usuario ya existente...");
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Usuario ya existente...");
+                            }
                         }
                     }else {
                         JOptionPane.showMessageDialog(null, "Debe completar todos los campos correspondientes...");
                     }
                 } else if(administradorCheckBox.isSelected()) {
                     if (verificarCamposEmpleado()) {
+                        if (verificarCampoNumerico(dniTextField1.getText())) {
+                            if (!gestorAdministradores.dniExiste(Integer.valueOf(dniTextField1.getText()))) {//VERIFICA EN LAS 3 listas 8clientes, vendedores y administradores)
+                                administrador = new Administrador(nombreCompletoTextField2.getText(), Integer.valueOf(dniTextField1.getText()), direccionTextField3.getText(),
+                                        telefonoTextField4.getText(), true, emailTextField5.getText(), contraseñaTextField6.getText(),
+                                        Float.valueOf(sueldoTextField7.getText()));
 
-                        if (!gestorAdministradores.dniExiste(Integer.valueOf(dniTextField1.getText()))) {//VERIFICA EN LAS 3 listas 8clientes, vendedores y administradores)
-                            administrador = new Administrador(nombreCompletoTextField2.getText(), Integer.valueOf(dniTextField1.getText()), direccionTextField3.getText(),
-                                    telefonoTextField4.getText(), true, emailTextField5.getText(), contraseñaTextField6.getText(),
-                                    Float.valueOf(sueldoTextField7.getText()));
+                                gestorAdministradores.crearUsuario(administrador);
+                                gestorAdministradores.guardarArchivoJsonUsuarios(archivoUsuarios);
+                                JOptionPane.showMessageDialog(null, "Administrador creado exitosamente...");
 
-                            gestorAdministradores.crearUsuario(administrador);
-                            gestorAdministradores.guardarArchivoJsonUsuarios(archivoUsuarios);
-                            JOptionPane.showMessageDialog(null, "Administrador creado exitosamente...");
-
-                        }else {
-                            JOptionPane.showMessageDialog(null, "Usuario ya existente...");
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Usuario ya existente...");
+                            }
                         }
-
-                    }else {
-                        JOptionPane.showMessageDialog(null, "Debe completar todos los campos correspondientes...");
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Debe completar todos los campos correspondientes...");
+                        }
+                    }
                     }
 
-                }
-            }
         });
 
 
@@ -575,7 +580,9 @@ public class GestionUsuariosGui {
         return  jList;
     }
 
-
+    private boolean verificarCampoNumerico(String cadena){//true si la cadena contiene solo numeros
+        return cadena.matches("[0-9]+");
+    }
 
 
 }
