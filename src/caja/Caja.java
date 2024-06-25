@@ -2,7 +2,6 @@ package caja;
 
 import caja.carrito.Carrito;
 import caja.facturacion.Factura;
-import productos.Almacen;
 import productos.GestorProductos;
 import productos.Producto;
 import productos.StockException;

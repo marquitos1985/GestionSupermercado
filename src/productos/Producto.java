@@ -29,12 +29,15 @@ public class Producto implements Comparable<Producto> {
         this.precio = precio;
         this.descripcion = descripcion;
         this.fechaDeVencimiento = fechaDeVencimiento;
+        this.stock = stock;
+        /*
         if(stock >= 0){
             this.stock = stock;
         }else {
             this.stock = 0;
         }
 
+         */
 
     }
 

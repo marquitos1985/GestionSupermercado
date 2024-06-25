@@ -2,6 +2,7 @@ package productos;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.codehaus.plexus.util.PathTool;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,12 +20,31 @@ public class GestorProductos {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
-    public Producto crearProducto (String nombre, String marca, TipoProducto tipoProducto, Float precio, String descripcion, String fechaDeVencimiento, int stock) {//TODO verificar que el precio no sea negativo
-        return new Producto(crearId(tipoProducto), nombre, marca, tipoProducto, precio, descripcion, fechaDeVencimiento, stock);
+    public Producto crearProducto (String nombre, String marca, TipoProducto tipoProducto, Float precio, String descripcion, String fechaDeVencimiento, int stock) throws StockException, PrecioNegativoException{//TODO verificar que el precio no sea negativo
+
+        Producto producto = new Producto(crearId(tipoProducto), nombre, marca, tipoProducto, precio, descripcion, fechaDeVencimiento, stock);
+        modificarPrecio(producto, precio);
+
+        definirStock(producto, stock);
+       // modificarStock(producto, stock);
+
+        return producto;
+
+        //return new Producto(crearId(tipoProducto), nombre, marca, tipoProducto, precio, descripcion, fechaDeVencimiento, stock);
     }
     public Producto crearProductoPorPeso (String nombre, String marca, TipoProducto tipoProducto, float precio, String descripcion, String fechaDeVencimiento, int stock,
-                                          float peso, float precioPorPeso){
-        return new ProductoPorPeso(crearId(tipoProducto), nombre, marca, tipoProducto, precio, descripcion, fechaDeVencimiento, stock, peso, precioPorPeso);
+                                          float peso, float precioPorPeso) throws StockException, PrecioNegativoException, PesoNegativoException{
+        ProductoPorPeso productoPorPeso = new ProductoPorPeso(crearId(tipoProducto), nombre, marca, tipoProducto, precio, descripcion, fechaDeVencimiento, stock, peso, precioPorPeso);
+
+        modificarPrecio(productoPorPeso, precio);
+        modificarPrecioPorPeso(productoPorPeso, precioPorPeso);
+        modificarPeso(productoPorPeso, peso);
+        definirStock(productoPorPeso, stock);
+
+        //modificarStock(productoPorPeso, stock);
+
+        return productoPorPeso;
+        //return new ProductoPorPeso(crearId(tipoProducto), nombre, marca, tipoProducto, precio, descripcion, fechaDeVencimiento, stock, peso, precioPorPeso);
 
     }
 
@@ -50,28 +70,44 @@ public class GestorProductos {
         return this.productos.stream().filter(producto -> producto.getMarca().equals(marca)).collect(Collectors.toList());
     }
 
-    public Producto modificarProducto(Producto producto, String nombre, String marca, TipoProducto tipoProducto, Float precio, String descripcion, String fechaDeVencimiento, int stock){
+    public Producto modificarProducto(Producto producto, String nombre, String marca, TipoProducto tipoProducto,
+                                      Float precio, String descripcion, String fechaDeVencimiento, int stock) throws StockException, PrecioNegativoException{
+
+        modificarPrecio(producto, precio);
+        definirStock(producto, stock);
+        //modificarStock(producto, stock);
+
+
         producto.setNombre(nombre);
         producto.setMarca(marca);
         producto.setTipoProducto(tipoProducto);
-        producto.setPrecio(precio);
+        //producto.setPrecio(precio);
         producto.setDescripcion(descripcion);
         producto.setFechaDeVencimiento(fechaDeVencimiento);
-        producto.setStock(stock);
+        //producto.setStock(stock);
         return producto;
     }
 
-    public ProductoPorPeso modificarProductoPorPeso(ProductoPorPeso productoPorPeso, String nombre, String marca, TipoProducto tipoProducto, float precio, String descripcion, String fechaDeVencimiento, int stock,
-                                                    float peso, float precioPorPeso){
+    public ProductoPorPeso modificarProductoPorPeso(ProductoPorPeso productoPorPeso, String nombre, String marca, TipoProducto tipoProducto, float precio,
+                                                    String descripcion, String fechaDeVencimiento, int stock, float peso, float precioPorPeso) throws StockException, PrecioNegativoException, PesoNegativoException{
+
+        modificarPrecio(productoPorPeso, precio);
+        modificarPeso(productoPorPeso, peso);
+        //modificarStock(productoPorPeso, stock);
+        definirStock(productoPorPeso, stock);
+        modificarPrecioPorPeso(productoPorPeso, precioPorPeso);
+
         productoPorPeso.setNombre(nombre);
         productoPorPeso.setMarca(marca);
         productoPorPeso.setTipoProducto(tipoProducto);
-        productoPorPeso.setPrecio(precio);
         productoPorPeso.setDescripcion(descripcion);
         productoPorPeso.setFechaDeVencimiento(fechaDeVencimiento);
-        productoPorPeso.setStock(stock);
-        productoPorPeso.setPeso(peso);
-        productoPorPeso.setPrecioPorPeso(precioPorPeso);
+        //productoPorPeso.setPrecio(precio);
+        //productoPorPeso.setStock(stock);
+        //productoPorPeso.setPeso(peso);
+        //productoPorPeso.setPrecioPorPeso(precioPorPeso);
+
+
         return productoPorPeso;
     }
     public boolean modificarNombre(Producto producto, String nombre){
@@ -98,13 +134,32 @@ public class GestorProductos {
         }
         return salida;
     }
-    public boolean modificarPrecio(Producto producto, float precio){
-        boolean salida = false;
-        if(this.productos.contains(producto)){
-            producto.setPrecio(precio);
-            salida = true;
-        }
-        return salida;
+    public void modificarPrecio(Producto producto, float precio) throws PrecioNegativoException{
+
+            if (validarPositividad(precio)){
+                producto.setPrecio(precio);
+            } else {
+                    throw new PrecioNegativoException("El precio debe ser positivo...");
+                }
+
+    }
+    public void modificarPrecioPorPeso(ProductoPorPeso producto, float precioPorPeso) throws PrecioNegativoException{
+
+            if (validarPositividad(precioPorPeso)){
+                producto.setPrecioPorPeso(precioPorPeso);
+            } else {
+                    throw new PrecioNegativoException("El precio debe ser positivo...");
+                }
+
+    }
+    public void modificarPeso(ProductoPorPeso producto, float peso) throws PesoNegativoException{
+
+            if (validarPositividad(peso)){
+                producto.setPeso(peso);
+            } else {
+                    throw new PesoNegativoException("El peso debe ser positivo...");
+                }
+
     }
     public boolean modificarDescripcion(Producto producto, String descripcion){
         boolean salida = false;
@@ -192,9 +247,10 @@ public class GestorProductos {
             return false;
         }
     }
+
     public void modificarStock (Producto producto, int cantidad) throws StockException {
         if (this.productos.contains(producto)){
-            if (cantidad >= 0){
+            if (validarPositividad(cantidad)){
                 producto.setStock(producto.getStock() + cantidad);
             }else{
                 if(producto.getStock() >= (- cantidad)){
@@ -204,15 +260,38 @@ public class GestorProductos {
                     throw new StockException("Stock existente menor a stock a eliminar.");
                 }
             }
-        } else {
-            if (cantidad >= 0) {
+        }
+        /*
+        else {
+
+
+            if (validarPositividad(cantidad)) {
                 producto.setStock(cantidad);
-                this.productos.add(producto);
+                //this.productos.add(producto);
 
             } else {
-                throw new StockException("Producto inexistente, stock negativo.");
+                throw new StockException("El stock debe ser positivo...");
             }
+
+
+        }
+        */
+
+    }
+
+    public void definirStock(Producto producto, int cantidad) throws StockException{
+        if (validarPositividad(cantidad)){
+            producto.setStock(cantidad);
+        }else {
+            throw new StockException("El stock debe ser positivo...");
         }
     }
 
+    public boolean validarPositividad(float cantidad){
+        return cantidad > 0 ;
+    }
+
+    public boolean validarPositividad(int cantidad){
+        return cantidad > 0 ;
+    }
 }

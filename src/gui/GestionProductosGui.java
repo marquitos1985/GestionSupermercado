@@ -1,9 +1,6 @@
 package gui;
 
-import productos.GestorProductos;
-import productos.Producto;
-import productos.ProductoPorPeso;
-import productos.TipoProducto;
+import productos.*;
 
 import javax.swing.*;
 import javax.swing.text.NumberFormatter;
@@ -100,27 +97,44 @@ public class GestionProductosGui {
             }
         });
         crearButton.addActionListener(new ActionListener() {
+
             @Override
             public void actionPerformed(ActionEvent e) {
                 Producto producto = null;
                 if (verificarCamposVaciosCreacion()) {
                     if (!porPesoCheckBox1.isSelected()) {
-                        producto = gestorProductos.crearProducto(nombreTextField2.getText(), marcaTextField3.getText(),
-                                (TipoProducto) tipoProductoComboBox1.getSelectedItem(), Float.valueOf(precioTextField5.getText()),
-                                descripcionTextField6.getText(), fechaVencTextField7.getText(), Integer.valueOf(stockTextField4.getText()));
-                        gestorProductos.agregarProducto(producto);
+                        try {
+                            producto = gestorProductos.crearProducto(nombreTextField2.getText(), marcaTextField3.getText(),
+                                    (TipoProducto) tipoProductoComboBox1.getSelectedItem(), Float.valueOf(precioTextField5.getText()),
+                                    descripcionTextField6.getText(), fechaVencTextField7.getText(), Integer.valueOf(stockTextField4.getText()));
+
+                        } catch (StockException ex) {
+                            JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+                        }catch (PrecioNegativoException ex){
+                            JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+                        }
 
 
                     } else {
-                        producto = gestorProductos.crearProductoPorPeso(nombreTextField2.getText(), marcaTextField3.getText(),
-                                (TipoProducto) tipoProductoComboBox1.getSelectedItem(), Float.valueOf(precioTextField5.getText()),
-                                descripcionTextField6.getText(), fechaVencTextField7.getText(), Integer.valueOf(stockTextField4.getText()),
-                                Float.valueOf(pesoTextField8.getText()), Float.valueOf(precioPesoTextField9.getText()));
-                        gestorProductos.agregarProducto(producto);
+                        try {
+                            producto = gestorProductos.crearProductoPorPeso(nombreTextField2.getText(), marcaTextField3.getText(),
+                                    (TipoProducto) tipoProductoComboBox1.getSelectedItem(), Float.valueOf(precioTextField5.getText()),
+                                    descripcionTextField6.getText(), fechaVencTextField7.getText(), Integer.valueOf(stockTextField4.getText()),
+                                    Float.valueOf(pesoTextField8.getText()), Float.valueOf(precioPesoTextField9.getText()));
 
 
+                        } catch (StockException ex) {
+                            JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+                        } catch (PrecioNegativoException ex) {
+                            JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+                        } catch (PesoNegativoException ex) {
+                            JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+                        }
                     }
+
                     if (producto != null) {
+
+                        gestorProductos.agregarProducto(producto);
                         gestorProductos.guardarArchivoJsonProductos("productos.json");
                         JOptionPane.showMessageDialog(null, "Creación exitosa...");
                     }
@@ -160,18 +174,38 @@ public class GestionProductosGui {
 
                 if (verificarCamposVaciosModificacion()) {
                     if (productoModificar instanceof ProductoPorPeso) {
-                        gestorProductos.modificarProductoPorPeso((ProductoPorPeso) productoModificar, nombreTextField11.getText(),
-                                marcaTextField12.getText(), (TipoProducto) tipoProductoComboBox2.getSelectedItem(), Float.valueOf(precioTextField13.getText()),
-                                descripcionTextField14.getText(), venciminetoTextField15.getText(), Integer.valueOf(stockTextField16.getText()),
-                                Float.valueOf(pesoTextField17.getText()), Float.valueOf(precioPorPesoTextField18.getText()));
+                        try {
+                            gestorProductos.modificarProductoPorPeso((ProductoPorPeso) productoModificar, nombreTextField11.getText(),
+                                    marcaTextField12.getText(), (TipoProducto) tipoProductoComboBox2.getSelectedItem(), Float.valueOf(precioTextField13.getText()),
+                                    descripcionTextField14.getText(), venciminetoTextField15.getText(), Integer.valueOf(stockTextField16.getText()),
+                                    Float.valueOf(pesoTextField17.getText()), Float.valueOf(precioPorPesoTextField18.getText()));
+                            gestorProductos.guardarArchivoJsonProductos(archivoProductos);
+                            JOptionPane.showMessageDialog(null, "Se modificó el producto...");
+                        } catch (StockException ex) {
+                            JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+                        } catch (PrecioNegativoException ex) {
+                            JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+                        } catch (PesoNegativoException ex) {
+                            JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+                        }
+
                     } else {
-                        gestorProductos.modificarProducto(productoModificar, nombreTextField11.getText(),
-                                marcaTextField12.getText(), (TipoProducto) tipoProductoComboBox2.getSelectedItem(), Float.valueOf(precioTextField13.getText()),
-                                descripcionTextField14.getText(), venciminetoTextField15.getText(), Integer.valueOf(stockTextField16.getText()));
+
+                        try {
+                            gestorProductos.modificarProducto(productoModificar, nombreTextField11.getText(),
+                                    marcaTextField12.getText(), (TipoProducto) tipoProductoComboBox2.getSelectedItem(), Float.valueOf(precioTextField13.getText()),
+                                    descripcionTextField14.getText(), venciminetoTextField15.getText(), Integer.valueOf(stockTextField16.getText()));
+                            gestorProductos.guardarArchivoJsonProductos(archivoProductos);
+                            JOptionPane.showMessageDialog(null, "Se modificó el producto...");
+                        } catch (StockException ex) {
+                            JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+                        } catch (PrecioNegativoException ex) {
+                            JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+                        }
+
                     }
 
-                    gestorProductos.guardarArchivoJsonProductos(archivoProductos);
-                    JOptionPane.showMessageDialog(null, "Se modificó el producto...");
+
 
 
                 }
@@ -245,14 +279,16 @@ public class GestionProductosGui {
                 !(descripcionTextField6.getText().isEmpty() && descripcionTextField6.getText().isBlank()) &&
                 !(fechaVencTextField7.getText().isEmpty() && fechaVencTextField7.getText().isBlank()) &&
                 !(stockTextField4.getText().isEmpty() && stockTextField4.getText().isBlank())) {
-            if (porPesoCheckBox1.isSelected() &&
-                    !(pesoTextField8.getText().isEmpty() && pesoTextField8.getText().isBlank()) &&
-                    !(precioPesoTextField9.getText().isEmpty() && precioPesoTextField9.getText().isBlank())) {
-                salida = true;
 
-            } else {
+            if (porPesoCheckBox1.isSelected()){
+                if(!(pesoTextField8.getText().isEmpty() && pesoTextField8.getText().isBlank()) &&
+                        !(precioPesoTextField9.getText().isEmpty() && precioPesoTextField9.getText().isBlank())){
+                    salida = true;
+                }
+            }else {
                 salida = true;
             }
+
 
         }
 
@@ -268,6 +304,7 @@ public class GestionProductosGui {
                 !(descripcionTextField14.getText().isEmpty() && descripcionTextField14.getText().isBlank()) &&
                 !(venciminetoTextField15.getText().isEmpty() && venciminetoTextField15.getText().isBlank()) &&
                 !(stockTextField16.getText().isEmpty() && stockTextField16.getText().isBlank())) {
+
             if (porPesoCheckBox1.isSelected() &&
                     !(pesoTextField17.getText().isEmpty() && pesoTextField17.getText().isBlank()) &&
                     !(precioPorPesoTextField18.getText().isEmpty() && precioPorPesoTextField18.getText().isBlank())) {
