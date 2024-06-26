@@ -1,11 +1,11 @@
 package productos;
 
-public class ProductoPorPeso extends Producto{//// puede que hay a q implementar una interfaz pesable. Para modificar el precio, porque hay 2, el de precio por peso y el de precio (ver contructor)
+public class ProductoPorPeso extends Producto{
     private float peso;
     private float precioPorPeso;
 
     public ProductoPorPeso() {
-        // Constructor por defecto
+
     }
 
     public ProductoPorPeso(String idProducto, String nombre, String marca, TipoProducto tipoProducto,

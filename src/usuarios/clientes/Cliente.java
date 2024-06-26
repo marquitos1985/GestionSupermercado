@@ -29,25 +29,6 @@ public class Cliente extends Usuario implements Comparable<Cliente> {
         }
         return this.getDni().compareTo(otroCliente.getDni());
     }
-/*
-    @Override
-    public String toString() {
-        return String.format(
-                "=====================\n" +
-                        " Detalles del Cliente \n" +
-                        "=====================\n" +
-                        "Nombre Completo: %s\n" +
-                        "DNI: %d\n" +
-                        "Dirección: %s\n" +
-                        "Teléfono: %s\n" +
-                        "Activo: %b\n" +
-                        "Email: %s\n" +
-                        "Socio: %b\n" +
-                        "=====================\n",
-                getNombreCompleto(), getDni(), getDireccion(), getTelefono(), getActivo(), getEmail(), socio);
-    }
-
- */
 
     @Override
     public String toString() {

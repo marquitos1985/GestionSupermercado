@@ -1,6 +1,5 @@
 package gui;
 
-import productos.GestorProductos;
 import usuarios.GestorUsuario;
 import usuarios.Usuario;
 import usuarios.clientes.Cliente;
@@ -63,7 +62,6 @@ public class GestionUsuariosGui {
     private GestorUsuario<Administrador> gestorAdministradores;
     private GestorUsuario<Vendedor> gestorVendedores;
     private Usuario usuarioEncontrado;
-    //private Usuario usuarioEliminar;
 
     public GestionUsuariosGui(GestorUsuario<Cliente> gestorClientes, GestorUsuario<Administrador> gestorAdministradores, GestorUsuario<Vendedor> gestorVendedores, String archivoUsuarios) {
         this.gestorClientes = gestorClientes;
@@ -71,7 +69,6 @@ public class GestionUsuariosGui {
         this.gestorVendedores = gestorVendedores;
         this.archivoUsuarios = archivoUsuarios;
         this.usuarioEncontrado = null;
-        //this.usuarioEliminar = null;
 
         JFrame frame = new JFrame("Gestor COTO");
         frame.setContentPane(this.gestionUsuariosJPanel);
@@ -144,7 +141,7 @@ public class GestionUsuariosGui {
                         if(verificarCampoNumerico(dniTextField1.getText())) {
                             if (!gestorClientes.dniExiste(Integer.valueOf(dniTextField1.getText())) &&
                                     !gestorVendedores.dniExiste(Integer.valueOf(dniTextField1.getText())) &&
-                                    !gestorAdministradores.dniExiste(Integer.valueOf(dniTextField1.getText()))) {//VERIFICA EN LAS 3 listas 8clientes, vendedores y administradores)
+                                    !gestorAdministradores.dniExiste(Integer.valueOf(dniTextField1.getText()))) {
 
                                 cliente = new Cliente(nombreCompletoTextField2.getText(), Integer.valueOf(dniTextField1.getText()), direccionTextField3.getText(),
                                         telefonoTextField4.getText(), true, emailTextField5.getText());
@@ -170,7 +167,8 @@ public class GestionUsuariosGui {
                     if(verificarCamposEmpleado()) {
                         if(verificarCampoNumerico(dniTextField1.getText())) {
 
-                            if (!gestorClientes.dniExiste(Integer.valueOf(dniTextField1.getText())) && !gestorVendedores.dniExiste(Integer.valueOf(dniTextField1.getText())) && !gestorAdministradores.dniExiste(Integer.valueOf(dniTextField1.getText()))) {//VERIFICA EN LAS 3 listas 8clientes, vendedores y administradores)
+                            if (!gestorClientes.dniExiste(Integer.valueOf(dniTextField1.getText())) && !gestorVendedores.dniExiste(Integer.valueOf(dniTextField1.getText()))
+                                    && !gestorAdministradores.dniExiste(Integer.valueOf(dniTextField1.getText()))) {
 
                                 vendedor = new Vendedor(nombreCompletoTextField2.getText(), Integer.valueOf(dniTextField1.getText()), direccionTextField3.getText(),
                                         telefonoTextField4.getText(), true, emailTextField5.getText(), contraseñaTextField6.getText(),
@@ -305,7 +303,7 @@ public class GestionUsuariosGui {
             public void actionPerformed(ActionEvent e) {
                 if (usuarioEncontrado instanceof Empleado){
                     if(verificarCamposEmpleadoModificar()){
-                        //TODO VERIFICAR EL SUELDO SEA MAYOR A CERO
+
                         usuarioEncontrado.setNombreCompleto(nombreCompletoTextField22.getText());
                         usuarioEncontrado.setDireccion(direccionTextField33.getText());
                         usuarioEncontrado.setTelefono(telefonoTextField44.getText());
@@ -404,12 +402,6 @@ public class GestionUsuariosGui {
 
             }
         });
-
-
-
-
-
-
 
     }
 
@@ -557,7 +549,6 @@ public class GestionUsuariosGui {
             salida = true;
 
         }
-
         return salida;
     }
 

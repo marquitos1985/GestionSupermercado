@@ -1,6 +1,5 @@
 package productos;
 
-import java.util.Comparator;
 import java.util.Objects;
 
 public class Producto implements Comparable<Producto> {
@@ -9,15 +8,9 @@ public class Producto implements Comparable<Producto> {
     private float precio;
     private String marca;
     private TipoProducto tipoProducto;
-    private String descripcion;//AGREGA INFORMACION ADICIONAL
+    private String descripcion;
     private String fechaDeVencimiento;
     private int stock;
-
-    //private static int idBase = 10000;
-
-
-
-
 
     public Producto(String idProducto, String nombre, String marca, TipoProducto tipoProducto,
                     Float precio, String descripcion, String fechaDeVencimiento, int stock) {
@@ -30,14 +23,6 @@ public class Producto implements Comparable<Producto> {
         this.descripcion = descripcion;
         this.fechaDeVencimiento = fechaDeVencimiento;
         this.stock = stock;
-        /*
-        if(stock >= 0){
-            this.stock = stock;
-        }else {
-            this.stock = 0;
-        }
-
-         */
 
     }
 
@@ -126,11 +111,13 @@ public class Producto implements Comparable<Producto> {
 
     @Override
     public String toString() {
-        return String.format("ID: %s - %s - %s - %s - Descripcion: %s - Venc: %s - PRECIO $%s - Stock: %s", this.idProducto, this.nombre, this.marca, this.tipoProducto, this.descripcion, this.fechaDeVencimiento, this.precio, this.stock);
+        return String.format("ID: %s - %s - %s - %s - Descripcion: %s - Venc: %s - PRECIO $%s - Stock: %s",
+                this.idProducto, this.nombre, this.marca, this.tipoProducto, this.descripcion, this.fechaDeVencimiento, this.precio, this.stock);
 
     }
     public String toStringResumido() {
-        return String.format("ID: %s - %s - %s - Descripcion: %s - Stock: %s", this.idProducto, this.nombre, this.marca, this.descripcion, this.stock);
+        return String.format("ID: %s - %s - %s - Descripcion: %s - Stock: %s",
+                this.idProducto, this.nombre, this.marca, this.descripcion, this.stock);
 
     }
 }

@@ -17,7 +17,6 @@ public class Caja {
 
     public Caja() {
         this.carrito = new Carrito();
-        //this.gestorProductos = new GestorProductos();
     }
 
     public void agregarProducto(Producto producto) throws StockException {
@@ -43,10 +42,6 @@ public class Caja {
         factura.generarPdfFactura();
     }
 
-    public GestorProductos getGestorProductos() {
-        return gestorProductos;
-    }
-
     public void setGestorProductos(GestorProductos gestorProductos) {
         this.gestorProductos = gestorProductos;
     }
@@ -69,18 +64,6 @@ public class Caja {
 
     public Carrito getCarrito() {
         return carrito;
-    }
-
-    public void setCarrito(Carrito carrito) {
-        this.carrito = carrito;
-    }
-
-    public Factura getFactura() {
-        return factura;
-    }
-
-    public void setFactura(Factura factura) {
-        this.factura = factura;
     }
 
     public float getSubtotal(){

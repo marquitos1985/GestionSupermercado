@@ -101,39 +101,17 @@ public class GestorSupermercado {
 
         DefaultListModel modelProductos = new DefaultListModel<>();
 
-
-        ////////////////////////////////////////
-        System.out.println("VEndedores de gestor vendedores");
-        System.out.println(gestorVendedores.listarVendeores());
-        System.out.println("Clientes de gestor vendedores");
-        System.out.println(gestorVendedores.listarClientes());
-        System.out.println("Administradores de gestor vendedores");
-        System.out.println(gestorVendedores.listarAdministradores());
-
-        System.out.println("Vendedores de gestor clientes");
-        System.out.println(gestorClientes.listarVendeores());
-        System.out.println("Clientes de gestor clientes");
-        System.out.println(gestorClientes.listarClientes());
-        System.out.println("Administradores de gestor clientes");
-        System.out.println(gestorClientes.listarAdministradores());
-
-
-
         //////////////////////////////////////////    SOLAPA VENDEDOR     //////////////////////////////////////////
         ingresarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                //System.out.println("Text " + usuarioTextField.getText() + "Matches " + usuarioTextField.getText().matches("[0-9]+"));
 
-                if(verificarCampoNumerico(usuarioTextField.getText())){//TODO si el numero ingresado en el campo es muy grande, por ej: 3188502731885027 tira error (debe ser por el alcance de Integer)
-                    //Vendedor vendedor = gestorVendedores.buscarUsuarioPorDni(Integer.valueOf(usuarioTextField.getText()));
+                if(verificarCampoNumerico(usuarioTextField.getText())){
                     Usuario usuario = gestorVendedores.buscarUsuarioPorDni(Integer.valueOf(usuarioTextField.getText()));
 
-                    //if(vendedor != null && vendedor instanceof Vendedor){
                     if(usuario != null && usuario instanceof Vendedor){
                         Vendedor vendedor = (Vendedor) usuario;
-                        //if(vendedor.getContraseña().equals(new String(passwordField.getPassword()))){
                         if(vendedor.getContraseña().equals(new String(passwordField.getPassword()))){
                             JOptionPane.showMessageDialog(null, "Ingreso exitoso....");
                             vendedorActivoLabel.setText(("DNI: " + vendedor.getDni() + " - " + vendedor.getNombreCompleto()).toUpperCase());
@@ -156,10 +134,8 @@ public class GestorSupermercado {
             public void actionPerformed(ActionEvent e) {
 
                 if(verificarCampoNumerico(dniClienteTextField.getText())) {
-                    //Cliente cliente = gestorClientes.buscarUsuarioPorDni(Integer.valueOf(dniClienteTextField.getText()));
                     Usuario usuario = gestorClientes.buscarUsuarioPorDni(Integer.valueOf(dniClienteTextField.getText()));
 
-                    //if(cliente != null){
                     if (usuario != null && usuario instanceof Cliente) {
                         Cliente cliente = (Cliente) usuario;
                         JOptionPane.showMessageDialog(null, "Cliente encontrado...");
@@ -253,9 +229,7 @@ public class GestorSupermercado {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                //if(!(admdniTextField1.getText().isBlank() && admdniTextField1.getText().isEmpty())){
                 if(verificarCampoNumerico(admdniTextField1.getText())){
-                    //Administrador administrador = gestorAdministradores.buscarUsuarioPorDni(Integer.valueOf(admdniTextField1.getText()));
                     Usuario usuario = gestorAdministradores.buscarUsuarioPorDni(Integer.valueOf(admdniTextField1.getText()));
                     //if(administrador != null){
                     if(usuario != null && usuario instanceof Administrador){

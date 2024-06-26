@@ -22,21 +22,6 @@ public class Vendedor extends Empleado implements Comparable<Vendedor> {
     public void setTurnoLaboral(Turno turnoLaboral) {
         this.turnoLaboral = turnoLaboral;
     }
-/*
-    @Override
-    public String toString() {
-        return String.format(
-                "=====================\n" +
-                        " Detalles del Vendedor \n" +
-                        "=====================\n" +
-                        "%s" +  // Llama al toString de la clase Empleado
-                        "Turno Laboral: %s (%s)\n" +
-                        "=====================\n",
-                super.toString(),
-                turnoLaboral.name(), turnoLaboral.getHorario());
-    }
-
- */
 
     @Override
     public String toString() {

@@ -82,7 +82,7 @@ public class GestionProductosGui {
         productoModificar = null;
 
 
-        ////////////////////////////////////////////     SOLAPA CREAR     ////////////////////////////////////////////TODO verificar los campos de crear, para que no generen error por ejemplo en precio negativo
+        ////////////////////////////////////////////     SOLAPA CREAR     ////////////////////////////////////////////
         porPesoCheckBox1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -144,8 +144,7 @@ public class GestionProductosGui {
             }
         });
 
-        ////////////////////////////////////////////     SOLAPA MODIFICAR     ////////////////////////////////////////////TODO verificar los campos de crear, para que no generen error por ejemplo en precio negativo
-
+        ////////////////////////////////////////////     SOLAPA MODIFICAR     ////////////////////////////////////////////
         buscarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

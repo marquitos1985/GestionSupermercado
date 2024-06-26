@@ -2,7 +2,6 @@ package caja.carrito;
 
 import productos.Producto;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;

@@ -87,14 +87,6 @@ public class GestorUsuario<T extends Usuario & Comparable<T>> {
         }
         return false;
 
-/*
-        return  (this.clientes.stream().anyMatch(cliente -> cliente.getDni().equals(dni)) ||
-                this.vendedores.stream().anyMatch(vendedor -> vendedor.getDni().equals(dni)) ||
-                this.administradores.stream().anyMatch(administrador -> administrador.getDni().equals(dni)));
-
-
- */
-
     }
 
     public boolean modificarSueldoUsario(Integer dni, float sueldoNuevo) {
@@ -267,8 +259,7 @@ public class GestorUsuario<T extends Usuario & Comparable<T>> {
             System.out.println("Usuario con DNI " + dni + " no encontrado.");
         }
     }
-    // TODO ver si lo siguiente se puede hacer genérico
-    public List<Cliente> listarClientes(){//Muestra los cleintes activos
+    public List<Cliente> listarClientes(){//Muestra los clientes activos
         List<Cliente> lista = new LinkedList<>();
         for (Cliente cliente: this.clientes){
             if(cliente.getActivo()){
@@ -298,13 +289,5 @@ public class GestorUsuario<T extends Usuario & Comparable<T>> {
         return lista;
     }
 
-    public boolean eliminar(T usuario){
-        boolean salida = false;
-        if(dniExiste(usuario.getDni())){
-            usuario.setActivo(false);
-            salida = true;
-        }
-        return salida;
-    }
 
 }
