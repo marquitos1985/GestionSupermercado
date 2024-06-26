@@ -1,5 +1,6 @@
 package gui;
 
+import productos.GestorProductos;
 import usuarios.GestorUsuario;
 import usuarios.Usuario;
 import usuarios.clientes.Cliente;
@@ -141,7 +142,9 @@ public class GestionUsuariosGui {
                 if(clienteCheckBox.isSelected()){
                     if(verificarCamposUsuario()){
                         if(verificarCampoNumerico(dniTextField1.getText())) {
-                            if (!gestorClientes.dniExiste(Integer.valueOf(dniTextField1.getText()))) {//VERIFICA EN LAS 3 listas 8clientes, vendedores y administradores)
+                            if (!gestorClientes.dniExiste(Integer.valueOf(dniTextField1.getText())) &&
+                                    !gestorVendedores.dniExiste(Integer.valueOf(dniTextField1.getText())) &&
+                                    !gestorAdministradores.dniExiste(Integer.valueOf(dniTextField1.getText()))) {//VERIFICA EN LAS 3 listas 8clientes, vendedores y administradores)
 
                                 cliente = new Cliente(nombreCompletoTextField2.getText(), Integer.valueOf(dniTextField1.getText()), direccionTextField3.getText(),
                                         telefonoTextField4.getText(), true, emailTextField5.getText());
@@ -167,12 +170,11 @@ public class GestionUsuariosGui {
                     if(verificarCamposEmpleado()) {
                         if(verificarCampoNumerico(dniTextField1.getText())) {
 
-                            if (!gestorVendedores.dniExiste(Integer.valueOf(dniTextField1.getText()))) {//VERIFICA EN LAS 3 listas 8clientes, vendedores y administradores)
+                            if (!gestorClientes.dniExiste(Integer.valueOf(dniTextField1.getText())) && !gestorVendedores.dniExiste(Integer.valueOf(dniTextField1.getText())) && !gestorAdministradores.dniExiste(Integer.valueOf(dniTextField1.getText()))) {//VERIFICA EN LAS 3 listas 8clientes, vendedores y administradores)
 
                                 vendedor = new Vendedor(nombreCompletoTextField2.getText(), Integer.valueOf(dniTextField1.getText()), direccionTextField3.getText(),
                                         telefonoTextField4.getText(), true, emailTextField5.getText(), contraseñaTextField6.getText(),
                                         Float.valueOf(sueldoTextField7.getText()), (Turno) turnoComboBox1.getSelectedItem());
-
                                 gestorVendedores.crearUsuario(vendedor);
                                 gestorVendedores.guardarArchivoJsonUsuarios(archivoUsuarios);
                                 JOptionPane.showMessageDialog(null, "Vendedor creado exitosamente...");
@@ -188,7 +190,7 @@ public class GestionUsuariosGui {
                 } else if(administradorCheckBox.isSelected()) {
                     if (verificarCamposEmpleado()) {
                         if (verificarCampoNumerico(dniTextField1.getText())) {
-                            if (!gestorAdministradores.dniExiste(Integer.valueOf(dniTextField1.getText()))) {//VERIFICA EN LAS 3 listas 8clientes, vendedores y administradores)
+                            if (!gestorClientes.dniExiste(Integer.valueOf(dniTextField1.getText())) && !gestorVendedores.dniExiste(Integer.valueOf(dniTextField1.getText())) && !gestorAdministradores.dniExiste(Integer.valueOf(dniTextField1.getText()))) {//VERIFICA EN LAS 3 listas 8clientes, vendedores y administradores)
                                 administrador = new Administrador(nombreCompletoTextField2.getText(), Integer.valueOf(dniTextField1.getText()), direccionTextField3.getText(),
                                         telefonoTextField4.getText(), true, emailTextField5.getText(), contraseñaTextField6.getText(),
                                         Float.valueOf(sueldoTextField7.getText()));
@@ -377,10 +379,12 @@ public class GestionUsuariosGui {
                         actualizarJList(usuariosPorTipoList1, gestorClientes.listarClientes());
                         break;
                     case "Vendedor":
-                        actualizarJList(usuariosPorTipoList1, gestorClientes.listarVendeores());
+                        actualizarJList(usuariosPorTipoList1, gestorVendedores.listarVendeores());
+                        //actualizarJList(usuariosPorTipoList1, gestorClientes.listarVendeores());
                         break;
                     case "Administrador":
-                        actualizarJList(usuariosPorTipoList1, gestorClientes.listarAdministradores());
+                        actualizarJList(usuariosPorTipoList1, gestorAdministradores.listarAdministradores());
+                        //actualizarJList(usuariosPorTipoList1, gestorClientes.listarAdministradores());
                         break;
 
                 }

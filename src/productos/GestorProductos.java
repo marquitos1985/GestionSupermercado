@@ -291,7 +291,7 @@ public class GestorProductos {
         return cantidad > 0 ;
     }
 
-    public boolean validarPositividad(int cantidad){
+    public static boolean validarPositividad(int cantidad){
         return cantidad > 0 ;
     }
 }
